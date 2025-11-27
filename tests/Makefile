@@ -6,11 +6,13 @@ BIN_DIR := ../source
 BIN := $(shell make -C $(BIN_DIR) -s print-NAME)
 BIN_BONUS := $(BIN)_bonus
 
+LIBMLX := $(shell realpath ./libmlx42.a)
+
 CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O0
 
 all: $(BUILD_DIR) $(DEBUG_DIR)
 	rm -rf $(NAME)
-	make all -s -C $(BIN_DIR) "CFLAGS = $(CFLAGS)" "DDEBUG = 1"
+	make all -s -C $(BIN_DIR) "CFLAGS = $(CFLAGS)" "LIBMLX = $(LIBMLX)"
 	cp $(BIN_DIR)/$(BIN) $(NAME)
 
 bonus: $(BUILD_DIR) $(DEBUG_DIR)

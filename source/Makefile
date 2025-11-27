@@ -4,9 +4,7 @@ SRC_DIR := ./src
 BUILD_DIR := ./build
 LIBS_DIR := ./libs
 
-LIBMLX_DIR := $(HOME)/MLX42
-LIBMLX := $(LIBMLX_DIR)/build/libmlx42.a
-DDEBUG := 0
+LIBMLX := /usr/local/lib/libmlx42.a
 
 FTLIBC_DIR := $(LIBS_DIR)/ftlibc
 FTLIBC := $(FTLIBC_DIR)/ftlibc.a
@@ -27,13 +25,7 @@ LDFLAGS := -ldl -lglfw -pthread -lm
 
 all: $(NAME)
 
-bonus: all
-
-libmlx:
-	cmake $(LIBMLX_DIR) -B $(LIBMLX_DIR)/build -DDEBUG=$(DDEBUG)
-	make -C $(LIBMLX_DIR)/build -j
-
-$(NAME): libmlx $(FTLIBC) $(MLX_AUX) $(OBJS) | $(BUILD_DIR)
+$(NAME): $(FTLIBC) $(MLX_AUX) $(OBJS) | $(BUILD_DIR)
 	$(CC) $(OBJS) $(CFLAGS) -Wl,--start-group $(LIBMLX) $(MLX_AUX) $(FTLIBC) -Wl,--end-group -o $(NAME) $(LDFLAGS)
 
 $(BUILD_DIR):
@@ -54,7 +46,6 @@ clean:
 	rm -rf $(BUILD_DIR)
 	make -C $(FTLIBC_DIR) clean
 	make -C $(MLX_AUX_DIR) clean
-	rm -rf $(LIBMLX_DIR)/build
 
 fclean: clean
 	rm -f $(NAME)

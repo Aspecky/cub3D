@@ -3,6 +3,9 @@
 !*/
 !*.*
 !Makefile
+!ftlibc
+!mlx_aux
+!MLX42
 
 # Config
 .vscode
