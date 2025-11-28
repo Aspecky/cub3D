@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:47:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/27 16:11:40 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/28 17:42:12 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction,
 	ray.stepSize = (t_vector2){1e30, 1e30};
 	if (direction.x != 0)
 		ray.stepSize.x = fabs(1 / direction.x);
-	// ray.stepSize.x =
-	// 	sqrt(1 + (direction.y / direction.x) * (direction.y / direction.x));
 	if (direction.y != 0)
-		// ray.stepSize.y =
-		// 	sqrt(1 + (direction.x / direction.y) * (direction.x / direction.y));
 		ray.stepSize.y = fabs(1 / direction.y);
 
 	t_ivector2 mapPos = {(int)origin.x, (int)origin.y};
@@ -56,7 +52,7 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction,
 	}
 
 	ray.distance = 0.0;
-	while (!ray.hit && ray.distance < max_distance)
+	while (!ray.hit)
 	{
 		if (ray.sideDist.x < ray.sideDist.y)
 		{
@@ -71,6 +67,8 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction,
 			ray.sideDist.y += ray.stepSize.y;
 			ray.side = 1;
 		}
+		if (ray.distance >= max_distance)
+			break;
 		if (mapPos.x >= 0 && mapPos.x < g_map.width && mapPos.y >= 0 &&
 			mapPos.y < g_map.height &&
 			g_map.buffer[mapPos.x * g_map.height + mapPos.y] > 0)

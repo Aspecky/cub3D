@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bindings.h                                         :+:      :+:    :+:   */
+/*   cursor_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/11 20:49:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/28 16:01:12 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/11/28 15:58:38 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/11/28 17:41:37 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BINDINGS_H
-# define BINDINGS_H
-
+#include "bindings.h"
+#include "consts.h"
+#include <math.h>
 #include <mlx42.h>
 
-void	close_window_bind(mlx_key_data_t keydata, void *param);
-void	movement_bind(void *param);
-void cursor_hook(double xpos, double ypos, void* param);
+static double g_old_x = 0;
 
-#endif
+void cursor_hook(double xpos, double ypos, void *param)
+{
+	double delta_x;
+	double rads;
+
+	(void)param;
+	(void)ypos;
+	delta_x = -(xpos - g_old_x);
+	rads = delta_x * CURSOR_SPEED * g_mlx->delta_time;
+	g_camera.dir = vector2_rot(g_camera.dir, rads);
+	g_camera.plane = vector2_rot(g_camera.plane, rads);
+	g_old_x = xpos;
+}

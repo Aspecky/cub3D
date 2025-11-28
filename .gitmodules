@@ -1,9 +1,6 @@
 [submodule "submodules/ftlibc"]
 	path = submodules/ftlibc
 	url = git@github.com:Aspecky/ftlibc.git
-[submodule "submodules/mlx_aux"]
-	path = submodules/mlx_aux
-	url = git@github.com:Aspecky/mlx_aux.git
 [submodule "submodules/MLX42"]
 	path = submodules/MLX42
 	url = https://github.com/codam-coding-college/MLX42.git

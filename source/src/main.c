@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/27 16:17:57 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/28 16:28:34 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ mlx_t *g_mlx;
 mlx_image_t *g_canvas;
 struct s_theme g_theme;
 struct s_map g_map;
+t_camera g_camera;
 
 static mlx_t *open_scaled_window(const char *title)
 {
@@ -93,27 +94,49 @@ static mlx_t *open_scaled_window(const char *title)
 	return (mlx);
 }
 
-void main_loop(void *arg)
+static void draw_ceiling(int x, int y_end)
 {
-	t_env *env;
+	int y;
+
+	y = 0;
+	while (y < y_end)
+	{
+		mlx_put_pixel(g_canvas, x, y, g_theme.ceiling);
+		y++;
+	}
+}
+
+static void draw_floor(int x, int y_start)
+{
+	int y;
+
+	y = y_start;
+	while (y < (int)g_canvas->height)
+	{
+		mlx_put_pixel(g_canvas, x, y, g_theme.floor);
+		y++;
+	}
+}
+
+static void main_loop(void *arg)
+{
+	t_camera *player;
 	uint32_t x;
 
-	env = arg;
+	player = arg;
 	x = 0;
 	mlx_clear_image(g_canvas);
 	while (x < g_canvas->width)
 	{
 		double camX = 2.0 * x / g_canvas->width - 1;
-		t_vector2 raydir = vector2_add(env->player.dir,
-									   vector2_scale(env->player.plane, camX));
-		t_raycast_result ray = raycast(env->player.pos, raydir, 10.0);
+		t_vector2 raydir = vector2_add(player->dir,
+									   vector2_scale(player->plane, camX));
+		t_raycast_result ray = raycast(player->pos, raydir, 10.0);
 
 		if (ray.hit)
 		{
-			double perpWallDist = ray.distance;
-
 			int h = (int)g_canvas->height;
-			int lineHeight = (int)(h / perpWallDist);
+			int lineHeight = (int)(h / ray.distance);
 
 			int drawStart = -lineHeight / 2 + h / 2;
 			if (drawStart < 0)
@@ -125,9 +148,9 @@ void main_loop(void *arg)
 			// calculate value of wallX
 			double wallX; // where exactly the wall was hit
 			if (ray.side == 0)
-				wallX = env->player.pos.y + perpWallDist * raydir.y;
+				wallX = player->pos.y + ray.distance * raydir.y;
 			else
-				wallX = env->player.pos.x + perpWallDist * raydir.x;
+				wallX = player->pos.x + ray.distance * raydir.x;
 			wallX -= floor((wallX));
 
 			// x coordinate on the texture
@@ -153,11 +176,14 @@ void main_loop(void *arg)
 			if (ray.side == 1 && raydir.y < 0)
 				texX = tex->width - texX - 1;
 
+			draw_ceiling((int)x, drawEnd);
+
 			double step = (double)tex->height / lineHeight;
 			double texPos = (int)(drawStart - h / 2 + lineHeight / 2) * step;
 			for (int y = drawStart; y < drawEnd; y++)
 			{
-				uint32_t texY = (uint32_t)texPos & (tex->height - 1);
+				uint32_t texY = (uint32_t)texPos;
+				// uint32_t texY = (uint32_t)texPos & (tex->height - 1);
 				texPos += step;
 
 				// Get pixel from texture (4 bytes per pixel: RGBA)
@@ -174,6 +200,7 @@ void main_loop(void *arg)
 				g_canvas->pixels[buffer_index + 2] = b;
 				g_canvas->pixels[buffer_index + 3] = a;
 			}
+			draw_floor(x, drawEnd);
 		}
 		x++;
 	}
@@ -181,20 +208,21 @@ void main_loop(void *arg)
 
 int main(void)
 {
-	t_env env;
 	t_hookservice *hookservice;
 
-	ft_bzero(&env, sizeof(t_env));
-	// env.player.pos = (t_vector2){20, 13.5};
-	env.player.pos = (t_vector2){2.5, 1.1};
-	// env.player.pos = (t_vector2){0, 0};
-	env.player.dir = (t_vector2){-1, 0};
-	env.player.plane = (t_vector2){0, 0.66};
+	ft_bzero(&g_camera, sizeof(t_camera));
+	// camera.pos = (t_vector2){20, 13.5};
+	g_camera.pos = (t_vector2){2.5, 1.1};
+	// camera.pos = (t_vector2){0, 0};
+	g_camera.dir = (t_vector2){-1, 0};
+	g_camera.plane = (t_vector2){0, 0.66};
 
 	g_mlx = open_scaled_window("cub3d");
 	g_canvas = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_canvas, 0, 0);
 
+	g_theme.ceiling = color4_from_hex("87CEEB");
+	g_theme.floor = color4_from_hex("9B7653");
 	g_theme.no = mlx_load_png("assets/North.png");
 	g_theme.ea = mlx_load_png("assets/East.png");
 	g_theme.so = mlx_load_png("assets/South.png");
@@ -215,8 +243,12 @@ int main(void)
 	hookservice = hookservice_init(g_mlx);
 	bind_key(hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
-	bind_loop(hookservice, movement_bind, &env, 0);
-	bind_loop(hookservice, main_loop, &env, 0);
+	bind_loop(hookservice, movement_bind, &g_camera, 0);
+	bind_loop(hookservice, main_loop, &g_camera, 0);
+
+	mlx_set_mouse_pos(g_mlx, 0, 0);
+	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
+	mlx_cursor_hook(g_mlx, cursor_hook, 0);
 
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);
