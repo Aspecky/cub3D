@@ -4,6 +4,3 @@
 [submodule "submodules/MLX42"]
 	path = submodules/MLX42
 	url = https://github.com/codam-coding-college/MLX42.git
-[submodule "submodules/mlx_aux"]
-	path = submodules/mlx_aux
-	url = https://github.com/Aspecky/mlx_aux.git
