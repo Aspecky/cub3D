@@ -8,7 +8,7 @@ BIN_BONUS := $(BIN)_bonus
 
 LIBMLX := $(shell realpath ./libmlx42.a)
 
-CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O0
+CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O1
 
 all: $(BUILD_DIR) $(DEBUG_DIR)
 	rm -rf $(NAME)

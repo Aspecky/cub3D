@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/28 16:19:39 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 18:21:22 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,31 @@
 #include "types.h"
 #include "utils.h"
 #include <math.h>
-#include <mlx42.h>
+#include <MLX42/MLX42.h>
 #include <stdio.h>
 
-static void rotate_player(t_camera *player)
+static void rotate_player(void)
 {
 	t_vector2 *plane;
 	double dt;
 	double rot_speed;
 
-	plane = &player->plane;
+	plane = &g_camera.plane;
 	dt = g_mlx->delta_time;
 	rot_speed = ROTSPEED * dt;
 	if (mlx_is_key_down(g_mlx, MLX_KEY_RIGHT))
 	{
-		player->dir = vector2_rot(player->dir, -rot_speed);
+		g_camera.dir = vector2_rot(g_camera.dir, -rot_speed);
 		*plane = vector2_rot(*plane, -rot_speed);
 	}
 	if (mlx_is_key_down(g_mlx, MLX_KEY_LEFT))
 	{
-		player->dir = vector2_rot(player->dir, rot_speed);
+		g_camera.dir = vector2_rot(g_camera.dir, rot_speed);
 		*plane = vector2_rot(*plane, rot_speed);
 	}
 }
 
-static void move_player(t_camera *player)
+static void move_player(void)
 {
 	t_vector2 walk_dir;
 	t_vector2 new_pos;
@@ -48,15 +48,15 @@ static void move_player(t_camera *player)
 	walk_dir = (t_vector2){0, 0};
 	dt = g_mlx->delta_time;
 	if (mlx_is_key_down(g_mlx, MLX_KEY_W))
-		walk_dir = vector2_add(walk_dir, player->dir);
+		walk_dir = vector2_add(walk_dir, g_camera.dir);
 	if (mlx_is_key_down(g_mlx, MLX_KEY_A))
 		walk_dir =
-			vector2_add(walk_dir, (t_vector2){-player->dir.y, player->dir.x});
+			vector2_add(walk_dir, (t_vector2){-g_camera.dir.y, g_camera.dir.x});
 	if (mlx_is_key_down(g_mlx, MLX_KEY_S))
-		walk_dir = vector2_add(walk_dir, vector2_scale(player->dir, -1));
+		walk_dir = vector2_add(walk_dir, vector2_scale(g_camera.dir, -1));
 	if (mlx_is_key_down(g_mlx, MLX_KEY_D))
 		walk_dir =
-			vector2_add(walk_dir, (t_vector2){player->dir.y, -player->dir.x});
+			vector2_add(walk_dir, (t_vector2){g_camera.dir.y, -g_camera.dir.x});
 
 	if (walk_dir.x == 0 && walk_dir.y == 0)
 		return;
@@ -69,7 +69,7 @@ static void move_player(t_camera *player)
 	{
 		t_vector2 pos;
 		double distance;
-		pos = player->pos;
+		pos = g_camera.pos;
 
 		distance = fmax(HITBOX_RADIUS, walkspeed);
 		t_raycast_result ray = raycast(pos, walk_dir, distance);
@@ -91,22 +91,20 @@ static void move_player(t_camera *player)
 			}
 			t_vector2 inter =
 				vector2_add(pos, vector2_scale(walk_dir, ray.distance));
-			player->pos = vector2_add(inter, vector2_scale(normal, 0.1));
+			g_camera.pos = vector2_add(inter, vector2_scale(normal, 0.1));
 		} else
-			player->pos =
-				vector2_add(player->pos, vector2_scale(walk_dir, distance));
+			g_camera.pos =
+				vector2_add(g_camera.pos, vector2_scale(walk_dir, distance));
 	} else
 	{
-		new_pos = vector2_add(player->pos, vector2_scale(walk_dir, walkspeed));
-		player->pos = new_pos;
+		new_pos = vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));
+		g_camera.pos = new_pos;
 	}
 }
 
 void movement_bind(void *param)
 {
-	t_camera *player;
-
-	player = param;
-	rotate_player(player);
-	move_player(player);
+	(void)param;
+	rotate_player();
+	move_player();
 }

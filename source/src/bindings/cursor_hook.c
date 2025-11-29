@@ -6,14 +6,14 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 15:58:38 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/28 17:41:37 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 15:49:50 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bindings.h"
 #include "consts.h"
 #include <math.h>
-#include <mlx42.h>
+#include <MLX42/MLX42.h>
 
 static double g_old_x = 0;
 

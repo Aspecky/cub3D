@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/28 16:52:06 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 18:22:59 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,19 @@
 # define CURSOR_SPEED 0.01 // radians / pixel
 # define COLLISIONS true
 
-#include <mlx42.h>
+#include <MLX42/MLX42.h>
 #include <Color4.h>
 #include "types.h"
 
 extern mlx_t *g_mlx;
-extern mlx_image_t *g_canvas;
-extern t_camera g_camera;
+extern mlx_image_t *g_img;
+
+extern struct s_camera {
+	t_vector2 pos;
+	t_vector2 dir;
+	t_vector2 plane;
+	mlx_instance_t inst;
+} g_camera;
 
 extern struct s_map {
 	int width;
