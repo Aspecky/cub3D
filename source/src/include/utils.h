@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:48:29 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/23 16:19:09 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:18:35 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define UTILS_H
 
 #include <stdbool.h>
-#include "Vector2.h"
+#include <mlx_aux/Vector2.h>
 
 typedef struct s_raycast_result
 {

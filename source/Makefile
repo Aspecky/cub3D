@@ -16,9 +16,7 @@ HEADERS := $(shell find $(SRC_DIR) -type f -name "*.h")
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o)
 
-INCLUDES := -I$(SRC_DIR)/include \
-			-I$(LIBS_DIR)/ftlibc/include \
-			-I$(LIBS_DIR)/mlx_aux/include
+INCLUDES := -I$(SRC_DIR)/include
 
 CFLAGS := -Wall -Wextra -Werror -Ofast
 LDFLAGS := -ldl -lglfw -pthread -lm

@@ -6,13 +6,12 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 18:21:22 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:18:11 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bindings.h"
 #include "consts.h"
-#include "types.h"
 #include "utils.h"
 #include <math.h>
 #include <MLX42/MLX42.h>

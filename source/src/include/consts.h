@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 18:22:59 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:18:05 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # define COLLISIONS true
 
 #include <MLX42/MLX42.h>
-#include <Color4.h>
-#include "types.h"
+#include <mlx_aux/Color4.h>
+#include <mlx_aux/Vector2.h>
 
 extern mlx_t *g_mlx;
 extern mlx_image_t *g_img;

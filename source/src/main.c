@@ -6,21 +6,19 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 18:32:19 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/29 19:20:50 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HookService.h"
+#include <mlx_aux/HookService.h>
 #include "bindings.h"
 #include "consts.h"
-#include "types.h"
 #include "utils.h"
-#include <Color4.h>
+#include <mlx_aux/Color4.h>
 #include <MLX42/MLX42.h>
-#include <ft_string.h>
+#include <ftlibc/ft_string.h>
 #include <math.h>
-#include <mlx_aux.h>
-#include <mlx_aux_types.h>
+#include <mlx_aux/mlx_aux.h>
 #include <stdio.h>
 #include <stdlib.h>
 
