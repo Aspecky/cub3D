@@ -1,10 +1,12 @@
+include .env
+
 NAME := cub3D
 
 SRC_DIR := ./src
 BUILD_DIR := ./build
 LIBS_DIR := ./libs
 
-LIBMLX := /usr/local/lib/libmlx42.a
+LIBMLX := ../submodules/MLX42/build/libmlx42.a
 
 FTLIBC_DIR := $(LIBS_DIR)/ftlibc
 FTLIBC := $(FTLIBC_DIR)/ftlibc.a
@@ -16,15 +18,15 @@ HEADERS := $(shell find $(SRC_DIR) -type f -name "*.h")
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o)
 
-INCLUDES := -I$(SRC_DIR)/include
+INCLUDES := -I$(SRC_DIR)/include \
+			-I../submodules/MLX42/include
 
 CFLAGS := -Wall -Wextra -Werror -Ofast
-LDFLAGS := -ldl -lglfw -pthread -lm
 
 all: $(NAME)
 
 $(NAME): $(FTLIBC) $(MLX_AUX) $(OBJS) | $(BUILD_DIR)
-	$(CC) $(OBJS) $(CFLAGS) -Wl,--start-group $(LIBMLX) $(MLX_AUX) $(FTLIBC) -Wl,--end-group -o $(NAME) $(LDFLAGS)
+	$(CC) $(OBJS) $(CFLAGS) $(LIBMLX) $(MLX_AUX) $(FTLIBC) -o $(NAME) $(LDFLAGS)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
