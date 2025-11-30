@@ -12,7 +12,7 @@ CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O1
 
 all: $(BUILD_DIR) $(DEBUG_DIR)
 	rm -rf $(NAME)
-	make all -s -C $(BIN_DIR) "CFLAGS = $(CFLAGS)" "LIBMLX = $(LIBMLX)"
+	make all -s -C $(BIN_DIR) "CFLAGS = $(CFLAGS)"
 	cp $(BIN_DIR)/$(BIN) $(NAME)
 
 bonus: $(BUILD_DIR) $(DEBUG_DIR)
