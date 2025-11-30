@@ -6,18 +6,18 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/30 15:09:51 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/30 18:36:04 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx_aux/HookService.h>
 #include "bindings.h"
 #include "consts.h"
 #include "utils.h"
-#include <mlx_aux/Color4.h>
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
 #include <math.h>
+#include <mlx_aux/Color4.h>
+#include <mlx_aux/HookService.h>
 #include <mlx_aux/mlx_aux.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,8 +48,6 @@
 // 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-// world_map[y][x]
-
 int world_map[][5] = {
 	{1, 1, 1, 1, 1}, //
 	{1, 0, 0, 0, 1}, //
@@ -61,21 +59,12 @@ int world_map[][5] = {
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 
-// int map_width
-// int world_map[][7] = {
-// 	{1, 1, 1, 1, 1, 1, 1}, //
-// 	{1, 0, 0, 0, 0, 0, 1}, //
-// 	{1, 0, 0, 1, 0, 0, 1}, //
-// 	{1, 0, 1, 1, 0, 0, 1}, //
-// 	{1, 0, 0, 0, 0, 0, 1}, //
-// 	{1, 1, 1, 1, 1, 1, 1}, //
-// };
-
 mlx_t *g_mlx;
 mlx_image_t *g_img;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_camera g_camera;
+struct s_view_model g_view_model;
 
 static mlx_t *open_scaled_window(const char *title)
 {
@@ -85,8 +74,8 @@ static mlx_t *open_scaled_window(const char *title)
 
 	mlx = mlx_init(1, 1, title, 0);
 	mlx_get_monitor_size(0, &width, &height);
-	mlx_set_window_size(mlx, (width * MONITOR_SCALE) / 100,
-						(height * MONITOR_SCALE) / 100);
+	mlx_set_window_size(mlx, (int32_t)(width * MONITOR_SCALE),
+						(int32_t)(height * MONITOR_SCALE));
 	mlx_set_window_pos(mlx, width / 2 - mlx->width / 2,
 					   height / 2 - mlx->height / 2);
 	return (mlx);
@@ -179,8 +168,8 @@ static void main_loop(void *arg)
 			double texPos = (int)(drawStart - h / 2 + lineHeight / 2) * step;
 			for (int y = drawStart; y < drawEnd; y++)
 			{
-				uint32_t texY = (uint32_t)texPos;
-				// uint32_t texY = (uint32_t)texPos & (tex->height - 1);
+				// uint32_t texY = (uint32_t)texPos;
+				uint32_t texY = (uint32_t)texPos & (tex->height - 1);
 				texPos += step;
 
 				// Get pixel from texture (4 bytes per pixel: RGBA)
@@ -203,6 +192,21 @@ static void main_loop(void *arg)
 	}
 }
 
+static void load_view_model(void)
+{
+	mlx_texture_t *tex = mlx_load_png("assets/view_model.png");
+	mlx_image_t *img = mlx_texture_to_image(g_mlx, tex);
+	double ratio = (double)img->height / img->width;
+	double width = (double)g_img->width * VIEW_MODEL_SCALE;
+	mlx_resize_image(img, width, width * ratio);
+	int id =
+		mlx_image_to_window(g_mlx, img, g_img->width / 2 - (img->width * 0.4),
+							g_img->height - img->height + VIEW_MODEL_DEPTH);
+	g_view_model.inst = img->instances + id;
+	g_view_model.og_pos =
+		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
+}
+
 int main(void)
 {
 	t_hookservice *hookservice;
@@ -214,6 +218,7 @@ int main(void)
 	g_camera.pos = (t_vector2){2.5, 1.1};
 	g_camera.dir = (t_vector2){-1, 0};
 	g_camera.plane = (t_vector2){0, 0.66};
+	load_view_model();
 
 	g_theme.ceiling = color4_from_hex("87CEEB");
 	g_theme.floor = color4_from_hex("9B7653");
@@ -239,6 +244,7 @@ int main(void)
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
 	bind_loop(hookservice, movement_bind, &g_camera, 0);
 	bind_loop(hookservice, main_loop, &g_camera, 0);
+	bind_loop(hookservice, head_bobbing_bind, NULL, 0);
 
 	mlx_set_mouse_pos(g_mlx, 0, 0);
 	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
