@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 19:20:50 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/11/30 15:09:51 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,16 +214,6 @@ int main(void)
 	g_camera.pos = (t_vector2){2.5, 1.1};
 	g_camera.dir = (t_vector2){-1, 0};
 	g_camera.plane = (t_vector2){0, 0.66};
-
-	{
-		mlx_texture_t *tex = mlx_load_png("assets/net.png");
-		mlx_image_t *img = mlx_texture_to_image(g_mlx, tex);
-		double ratio = (double)img->height / img->width;
-		mlx_resize_image(img, 2000, 2000 * ratio);
-		int id = mlx_image_to_window(g_mlx, img, 0, 0);
-
-		g_camera.inst = img->instances[id];
-	}
 
 	g_theme.ceiling = color4_from_hex("87CEEB");
 	g_theme.floor = color4_from_hex("9B7653");
