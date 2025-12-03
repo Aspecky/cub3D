@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/03 15:23:52 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/03 15:34:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define MONITOR_SCALE 0.75
 # define WALKSPEED 1.5 // squares / second
 # define ROTSPEED 3 // radians / second
-# define HITBOX_RADIUS 0.3
+# define HITBOX_RADIUS 0.1
 # define CURSOR_SPEED 0.01 // radians / pixel
 # define COLLISIONS true
 

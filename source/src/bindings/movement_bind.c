@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/03 15:25:14 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/03 15:35:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static t_raycast_result circle_raycast(t_vector2 origin, t_vector2 direction,
 		angle = ((double)i / num_rays) * M_PI * 2;
 		start = (t_vector2){origin.x + cos(angle) * radius,
 							origin.y + sin(angle) * radius};
-		// start = vector2_add(
-		// 	origin, vector2_scale(vector2_rot(direction, angle), radius));
 		ray = raycast(start, direction, distance);
 		if (ray.hit)
 		{
