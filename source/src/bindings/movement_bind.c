@@ -6,16 +6,47 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 19:18:11 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/03 15:35:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bindings.h"
 #include "consts.h"
 #include "utils.h"
-#include <math.h>
 #include <MLX42/MLX42.h>
+#include <float.h>
+#include <math.h>
 #include <stdio.h>
+
+static t_raycast_result circle_raycast(t_vector2 origin, t_vector2 direction,
+									   double distance, double radius)
+{
+	int num_rays = 12;
+	t_raycast_result shortest_ray;
+	t_raycast_result ray;
+	t_vector2 start;
+	double angle;
+	int i;
+
+	shortest_ray = (t_raycast_result){.hit = false, .distance = DBL_MAX};
+	i = 0;
+	while (i < num_rays)
+	{
+		angle = ((double)i / num_rays) * M_PI * 2;
+		start = (t_vector2){origin.x + cos(angle) * radius,
+							origin.y + sin(angle) * radius};
+		ray = raycast(start, direction, distance);
+		if (ray.hit)
+		{
+			ray.distance = vector2_mag(vector2_sub(ray.position, origin));
+			if (ray.distance < shortest_ray.distance)
+				shortest_ray = ray;
+		}
+		i++;
+	}
+
+	return (shortest_ray);
+}
 
 static void rotate_player(void)
 {
@@ -49,13 +80,11 @@ static void move_player(void)
 	if (mlx_is_key_down(g_mlx, MLX_KEY_W))
 		walk_dir = vector2_add(walk_dir, g_camera.dir);
 	if (mlx_is_key_down(g_mlx, MLX_KEY_A))
-		walk_dir =
-			vector2_add(walk_dir, (t_vector2){-g_camera.dir.y, g_camera.dir.x});
+		walk_dir = vector2_add(walk_dir, vector2_rot(g_camera.dir, M_PI_2));
 	if (mlx_is_key_down(g_mlx, MLX_KEY_S))
 		walk_dir = vector2_add(walk_dir, vector2_scale(g_camera.dir, -1));
 	if (mlx_is_key_down(g_mlx, MLX_KEY_D))
-		walk_dir =
-			vector2_add(walk_dir, (t_vector2){g_camera.dir.y, -g_camera.dir.x});
+		walk_dir = vector2_add(walk_dir, vector2_rot(g_camera.dir, -M_PI_2));
 
 	if (walk_dir.x == 0 && walk_dir.y == 0)
 		return;
@@ -71,29 +100,34 @@ static void move_player(void)
 		pos = g_camera.pos;
 
 		distance = fmax(HITBOX_RADIUS, walkspeed);
-		t_raycast_result ray = raycast(pos, walk_dir, distance);
+		t_raycast_result ray =
+			circle_raycast(pos, walk_dir, distance, HITBOX_RADIUS);
 		if (ray.hit)
 		{
+			// Calculate wall normal
 			t_vector2 normal = {0, 0};
 			if (ray.side == 0)
-			{
-				if (walk_dir.x > 0)
-					normal.x = -1;
-				else
-					normal.x = 1;
-			} else
-			{
-				if (walk_dir.y > 0)
-					normal.y = -1;
-				else
-					normal.y = 1;
-			}
-			t_vector2 inter =
-				vector2_add(pos, vector2_scale(walk_dir, ray.distance));
-			g_camera.pos = vector2_add(inter, vector2_scale(normal, 0.1));
+				normal.x = (walk_dir.x > 0) ? -1 : 1;
+			else
+				normal.y = (walk_dir.y > 0) ? -1 : 1;
+
+			// Project movement onto wall surface for sliding
+			// slide_dir = walk_dir - (walk_dir · normal) * normal
+			double dot = walk_dir.x * normal.x + walk_dir.y * normal.y;
+			t_vector2 slide_dir = {walk_dir.x - dot * normal.x,
+								   walk_dir.y - dot * normal.y};
+
+			// Try moving in the slide direction
+			t_raycast_result slide_ray = circle_raycast(
+				pos, vector2_unit(slide_dir), distance, HITBOX_RADIUS);
+
+			if (!slide_ray.hit)
+				g_camera.pos = vector2_add(g_camera.pos,
+										   vector2_scale(slide_dir, walkspeed));
+
 		} else
 			g_camera.pos =
-				vector2_add(g_camera.pos, vector2_scale(walk_dir, distance));
+				vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));
 	} else
 	{
 		new_pos = vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));

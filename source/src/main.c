@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/30 18:36:04 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/02 18:48:45 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@
 // 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-int world_map[][5] = {
-	{1, 1, 1, 1, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 0, 0, 1, 1}, //
-	{1, 0, 1, 1, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 1, 1, 1, 1}, //
+int world_map[][7] = {
+	{1, 1, 1, 1, 1, 1, 1}, //
+	{1, 0, 0, 0, 0, 0, 1}, //
+	{1, 0, 1, 0, 0, 0, 1}, //
+	{1, 0, 0, 0, 0, 0, 1}, //
+	{1, 0, 0, 0, 0, 0, 1}, //
+	{1, 1, 1, 1, 1, 1, 1}, //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
@@ -134,9 +134,9 @@ static void main_loop(void *arg)
 			// calculate value of wallX
 			double wallX; // where exactly the wall was hit
 			if (ray.side == 0)
-				wallX = g_camera.pos.y + ray.distance * raydir.y;
+				wallX = ray.position.y;
 			else
-				wallX = g_camera.pos.x + ray.distance * raydir.x;
+				wallX = ray.position.x;
 			wallX -= floor((wallX));
 
 			// x coordinate on the texture
@@ -215,7 +215,7 @@ int main(void)
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 
-	g_camera.pos = (t_vector2){2.5, 1.1};
+	g_camera.pos = (t_vector2){2.5, 1.5};
 	g_camera.dir = (t_vector2){-1, 0};
 	g_camera.plane = (t_vector2){0, 0.66};
 	load_view_model();
