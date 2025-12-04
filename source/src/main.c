@@ -6,12 +6,13 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/02 18:48:45 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/04 21:33:43 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bindings.h"
 #include "consts.h"
+#include "types.h"
 #include "utils.h"
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
@@ -48,13 +49,13 @@
 // 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-int world_map[][7] = {
-	{1, 1, 1, 1, 1, 1, 1}, //
-	{1, 0, 0, 0, 0, 0, 1}, //
-	{1, 0, 1, 0, 0, 0, 1}, //
-	{1, 0, 0, 0, 0, 0, 1}, //
-	{1, 0, 0, 0, 0, 0, 1}, //
-	{1, 1, 1, 1, 1, 1, 1}, //
+float world_map[][7] = {
+	{1, 1, 1, 1, 1, 1, 1},	  //
+	{1, 1, 0, 0, 0, 0, 1},	  //
+	{1, 1, 2, 1, 1, 0, 1}, //
+	{1, 0, 0, 0, 1, 2, 1},	  //
+	{1, 0, 0, 0, 0, 0, 1},	  //
+	{1, 1, 1, 1, 1, 1, 1},	  //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
@@ -65,6 +66,7 @@ struct s_theme g_theme;
 struct s_map g_map;
 struct s_camera g_camera;
 struct s_view_model g_view_model;
+struct s_doors g_doors;
 
 static mlx_t *open_scaled_window(const char *title)
 {
@@ -142,18 +144,25 @@ static void main_loop(void *arg)
 			// x coordinate on the texture
 			mlx_texture_t *tex;
 
-			if (ray.side == 0)
+			tex = 0;
+			if (ray.cell_type == CELL_WALL)
 			{
-				if (raydir.x < 0)
-					tex = g_theme.ea;
-				else
-					tex = g_theme.we;
-			} else
+				if (ray.side == 0)
+				{
+					if (raydir.x < 0)
+						tex = g_theme.ea;
+					else
+						tex = g_theme.we;
+				} else
+				{
+					if (raydir.y < 0)
+						tex = g_theme.no;
+					else
+						tex = g_theme.so;
+				}
+			} else if (ray.cell_type == CELL_DOOR)
 			{
-				if (raydir.y < 0)
-					tex = g_theme.no;
-				else
-					tex = g_theme.so;
+				tex = g_theme.door;
 			}
 
 			uint32_t texX = (uint32_t)(wallX * tex->width);
@@ -168,7 +177,6 @@ static void main_loop(void *arg)
 			double texPos = (int)(drawStart - h / 2 + lineHeight / 2) * step;
 			for (int y = drawStart; y < drawEnd; y++)
 			{
-				// uint32_t texY = (uint32_t)texPos;
 				uint32_t texY = (uint32_t)texPos & (tex->height - 1);
 				texPos += step;
 
@@ -177,14 +185,14 @@ static void main_loop(void *arg)
 				uint8_t r = tex->pixels[pixel_index + 0];
 				uint8_t g = tex->pixels[pixel_index + 1];
 				uint8_t b = tex->pixels[pixel_index + 2];
-				uint8_t a = tex->pixels[pixel_index + 3];
+				// uint8_t a = (uint8_t)(255 * ray.cell_visibility);
 
 				// Write directly to buffer instead of using mlx_put_pixel
 				uint32_t buffer_index = (g_img->width * y + x) * 4;
 				g_img->pixels[buffer_index + 0] = r;
 				g_img->pixels[buffer_index + 1] = g;
 				g_img->pixels[buffer_index + 2] = b;
-				g_img->pixels[buffer_index + 3] = a;
+				g_img->pixels[buffer_index + 3] = 255;
 			}
 			draw_floor(x, drawEnd);
 		}
@@ -226,6 +234,7 @@ int main(void)
 	g_theme.ea = mlx_load_png("assets/East.png");
 	g_theme.so = mlx_load_png("assets/South.png");
 	g_theme.we = mlx_load_png("assets/West.png");
+	g_theme.door = mlx_load_png("assets/door.png");
 	mlx_resize_texture(g_mlx, g_theme.no, 64, 64);
 	mlx_resize_texture(g_mlx, g_theme.ea, 64, 64);
 	mlx_resize_texture(g_mlx, g_theme.so, 64, 64);
@@ -233,11 +242,31 @@ int main(void)
 
 	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 	g_map.height = sizeof(world_map) / sizeof(world_map[0]);
-	g_map.buffer = malloc(sizeof(int) * g_map.width * g_map.height);
+	g_map.buffer = malloc(sizeof(float) * g_map.width * g_map.height);
 	for (int x = 0; x < g_map.width; x++)
 		for (int y = 0; y < g_map.height; y++)
 			g_map.buffer[x * g_map.height + y] =
 				world_map[g_map.height - 1 - y][x];
+
+	g_doors.count = 0;
+	for (int i = 0; i < g_map.width * g_map.height; i++)
+	{
+		if (ceilf(g_map.buffer[i]) == CELL_DOOR)
+			g_doors.count++;
+	}
+	g_doors.locations = malloc(sizeof(t_ivector2) * g_doors.count);
+	g_doors.count = 0;
+	for (int x = 0; x < g_map.width; x++)
+	{
+		for (int y = 0; y < g_map.height; y++)
+		{
+			if (ceilf(g_map.buffer[x * g_map.height + y]) == CELL_DOOR)
+			{
+				g_doors.locations[g_doors.count] = (t_ivector2){x, y};
+				g_doors.count++;
+			}
+		}
+	}
 
 	hookservice = hookservice_init(g_mlx);
 	bind_key(hookservice, close_window_bind, NULL,
@@ -245,9 +274,10 @@ int main(void)
 	bind_loop(hookservice, movement_bind, &g_camera, 0);
 	bind_loop(hookservice, main_loop, &g_camera, 0);
 	bind_loop(hookservice, head_bobbing_bind, NULL, 0);
+	// bind_loop(hookservice, automatic_doors_bind, NULL, 0);
 
 	mlx_set_mouse_pos(g_mlx, 0, 0);
-	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
+	// mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
 	mlx_cursor_hook(g_mlx, cursor_hook, 0);
 
 	mlx_loop(g_mlx);

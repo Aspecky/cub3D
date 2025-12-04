@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:47:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/02 18:29:01 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/04 20:30:02 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 			ray.hit = true;
 			ray.position =
 				vector2_add(origin, vector2_scale(direction, ray.distance));
+			ray.cell_type =
+				ceilf(g_map.buffer[mapPos.x * g_map.height + mapPos.y]);
+			ray.cell_visibility =
+				1 - fmodf(g_map.buffer[mapPos.x * g_map.height + mapPos.y], 1);
+			// ray.cell_visibility = 1 - fmodf(1.9f, 1);
 		}
 	}
 	return (ray);
