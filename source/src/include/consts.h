@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/04 21:29:27 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/05 18:34:19 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ extern struct s_camera {
 extern struct s_map {
 	int width;
 	int height;
-	float *buffer;
+	double *buffer;
 } g_map;
 
 extern struct s_theme {
