@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/05 22:33:10 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/06 20:11:32 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ double world_map[][7] = {
 	{1, 1, 0, 0, 0, 0, 1},	 //
 	{1, 1, 0, 0, 0, 0, 1},	 //
 	{1, 1, 0, 0, 0, 0, 1},	 //
-	{1, 1, 2.5, 1, 1, 0, 1}, //
+	{1, 1, 2, 1, 1, 0, 1}, //
 	{1, 0, 0, 0, 1, 2, 1},	 //
-	{1, 0, 0, 0, 0, 0, 1},	 //
+	{1.8, 0, 0, 0, 0, 0, 1},	 //
 	{1, 1, 1, 1, 1, 1, 1},	 //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
@@ -284,16 +284,24 @@ int main(void)
 
 	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 	g_map.height = sizeof(world_map) / sizeof(world_map[0]);
-	g_map.buffer = malloc(sizeof(double) * g_map.width * g_map.height);
+	g_map.buffer = malloc(sizeof(*g_map.buffer) * g_map.width * g_map.height);
 	for (int x = 0; x < g_map.width; x++)
+	{
 		for (int y = 0; y < g_map.height; y++)
-			g_map.buffer[x * g_map.height + y] =
-				world_map[g_map.height - 1 - y][x];
+		{
+			double cell_value = world_map[g_map.height - 1 - y][x];
+			g_map.buffer[x * g_map.height + y].cell_type = (int)cell_value;
+			g_map.buffer[x * g_map.height + y].opacity =
+				cell_value - (int)cell_value;
+			if (g_map.buffer[x * g_map.height + y].opacity == 0)
+				g_map.buffer[x * g_map.height + y].opacity = 1;
+		}
+	}
 
 	g_doors.count = 0;
 	for (int i = 0; i < g_map.width * g_map.height; i++)
 	{
-		if (floor(g_map.buffer[i]) == CELL_DOOR)
+		if (g_map.buffer[i].cell_type == CELL_DOOR)
 			g_doors.count++;
 	}
 	g_doors.locations = malloc(sizeof(t_ivector2) * g_doors.count);
@@ -302,7 +310,7 @@ int main(void)
 	{
 		for (int y = 0; y < g_map.height; y++)
 		{
-			if (floor(g_map.buffer[x * g_map.height + y]) == CELL_DOOR)
+			if (g_map.buffer[x * g_map.height + y].cell_type == CELL_DOOR)
 			{
 				g_doors.locations[g_doors.count] = (t_ivector2){x, y};
 				g_doors.count++;

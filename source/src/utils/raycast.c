@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:47:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/05 18:33:31 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/06 20:11:02 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,15 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 			break;
 		if (mapPos.x >= 0 && mapPos.x < g_map.width && mapPos.y >= 0 &&
 			mapPos.y < g_map.height &&
-			g_map.buffer[mapPos.x * g_map.height + mapPos.y] > 0)
+			g_map.buffer[mapPos.x * g_map.height + mapPos.y].cell_type > 0)
 		{
 			ray.hit = true;
 			ray.position =
 				vector2_add(origin, vector2_scale(direction, ray.distance));
-			// ray.cell_type =
-			// 	ceilf(g_map.buffer[mapPos.x * g_map.height + mapPos.y]);
-			// ray.cell_opacity =
-			// 	1 - fmodf(g_map.buffer[mapPos.x * g_map.height + mapPos.y], 1);
-			double tmp;
+			ray.cell_type =
+				g_map.buffer[mapPos.x * g_map.height + mapPos.y].cell_type;
 			ray.cell_opacity =
-				modf(g_map.buffer[mapPos.x * g_map.height + mapPos.y], &tmp);
-			ray.cell_type = tmp;
-			if (ray.cell_opacity == 0)
-				ray.cell_opacity = 1;
+				g_map.buffer[mapPos.x * g_map.height + mapPos.y].opacity;
 		}
 	}
 	return (ray);
