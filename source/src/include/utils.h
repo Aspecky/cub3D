@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:48:29 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/05 18:31:37 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/07 15:56:50 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_raycast_result
 	t_vector2	sideDist;
 	double distance;
 	t_vector2	position;
-	enum e_cell	cell_type;
-	double	cell_opacity;
+	enum e_tile	tile_type;
+	double	tile_opacity;
 } t_raycast_result;
 
 t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance);

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 17:05:33 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/04 17:10:34 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/07 15:56:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <stdint.h>
 
-enum e_cell: uint8_t {
+enum e_tile: uint8_t {
 	CELL_EMPTY,
 	CELL_WALL,
 	CELL_DOOR,

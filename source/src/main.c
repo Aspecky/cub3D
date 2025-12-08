@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/06 20:11:32 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/07 17:33:36 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,34 @@
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
 double world_map[][7] = {
-	{1, 1, 1, 1, 1, 1, 1},	 //
-	{1, 1, 0, 0, 0, 0, 1},	 //
-	{1, 1, 0, 0, 0, 0, 1},	 //
-	{1, 1, 0, 0, 0, 0, 1},	 //
-	{1, 1, 2, 1, 1, 0, 1}, //
-	{1, 0, 0, 0, 1, 2, 1},	 //
-	{1.8, 0, 0, 0, 0, 0, 1},	 //
-	{1, 1, 1, 1, 1, 1, 1},	 //
+	{1, 1, 1, 1, 1, 1, 1},		//
+	{1, 1, 0, 0, 0, 0, 1},		//
+	{1, 1, 0, 0, 0, 0, 1},		//
+	{1, 1, 0, 0, 0, 0, 1},		//
+	{1, 1.0001, 2, 1, 1, 0, 1}, //
+	{1, 0, 0, 0, 1, 2, 1},		//
+	{1.8, 0, 0, 0, 0, 0, 1},	//
+	{1, 1, 1, 1, 1, 1, 1},		//
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 
 mlx_t *g_mlx;
 mlx_image_t *g_img;
+mlx_image_t *g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_camera g_camera;
 struct s_view_model g_view_model;
 struct s_doors g_doors;
 
+/*
+	1920x1080
+	1920 * 0.7 = 1344
+	898 * 0.7 = 756
+
+
+*/
 static mlx_t *open_scaled_window(const char *title)
 {
 	mlx_t *mlx;
@@ -108,10 +116,10 @@ static void draw_floor_and_ceiling(void)
 	}
 }
 
-static mlx_texture_t *cell_type_to_texture(t_raycast_result ray,
+static mlx_texture_t *tile_type_to_texture(t_raycast_result ray,
 										   t_vector2 direction)
 {
-	if (ray.cell_type == CELL_WALL)
+	if (ray.tile_type == CELL_WALL)
 	{
 		if (ray.side == 0)
 		{
@@ -126,7 +134,7 @@ static mlx_texture_t *cell_type_to_texture(t_raycast_result ray,
 			else
 				return g_theme.so;
 		}
-	} else if (ray.cell_type == CELL_DOOR)
+	} else if (ray.tile_type == CELL_DOOR)
 		return g_theme.door;
 	return (g_theme.no);
 }
@@ -169,7 +177,7 @@ static void main_loop(void *arg)
 				traveled_distance += ray.distance;
 
 				rays_count++;
-				if (ray.cell_opacity >= 1)
+				if (ray.tile_opacity >= 1)
 					break;
 			}
 
@@ -188,7 +196,7 @@ static void main_loop(void *arg)
 				if (drawEnd >= h)
 					drawEnd = h - 1;
 
-				mlx_texture_t *tex = cell_type_to_texture(ray, raydir);
+				mlx_texture_t *tex = tile_type_to_texture(ray, raydir);
 
 				// calculate value of wallX
 				double wall_x; // where exactly the wall was hit
@@ -207,7 +215,7 @@ static void main_loop(void *arg)
 				double step = (double)tex->height / lineHeight;
 				double texPos =
 					(int)(drawStart - h / 2 + lineHeight / 2) * step;
-				double new_alpha = ray.cell_opacity;
+				double new_alpha = ray.tile_opacity;
 
 				for (int y = drawStart; y < drawEnd; y++)
 				{
@@ -290,7 +298,7 @@ int main(void)
 		for (int y = 0; y < g_map.height; y++)
 		{
 			double cell_value = world_map[g_map.height - 1 - y][x];
-			g_map.buffer[x * g_map.height + y].cell_type = (int)cell_value;
+			g_map.buffer[x * g_map.height + y].tile_type = (int)cell_value;
 			g_map.buffer[x * g_map.height + y].opacity =
 				cell_value - (int)cell_value;
 			if (g_map.buffer[x * g_map.height + y].opacity == 0)
@@ -301,7 +309,7 @@ int main(void)
 	g_doors.count = 0;
 	for (int i = 0; i < g_map.width * g_map.height; i++)
 	{
-		if (g_map.buffer[i].cell_type == CELL_DOOR)
+		if (g_map.buffer[i].tile_type == CELL_DOOR)
 			g_doors.count++;
 	}
 	g_doors.locations = malloc(sizeof(t_ivector2) * g_doors.count);
@@ -310,12 +318,20 @@ int main(void)
 	{
 		for (int y = 0; y < g_map.height; y++)
 		{
-			if (g_map.buffer[x * g_map.height + y].cell_type == CELL_DOOR)
+			if (g_map.buffer[x * g_map.height + y].tile_type == CELL_DOOR)
 			{
 				g_doors.locations[g_doors.count] = (t_ivector2){x, y};
 				g_doors.count++;
 			}
 		}
+	}
+
+	{
+		uint32_t height;
+
+		height = (int)((double)g_img->height * MINIMAP_SCALE);
+		g_minimap = mlx_new_image(g_mlx, height, height);
+		mlx_image_to_window(g_mlx, g_minimap, 10, 10);
 	}
 
 	hookservice = hookservice_init(g_mlx);
@@ -325,6 +341,7 @@ int main(void)
 	bind_loop(hookservice, main_loop, &g_camera, 0);
 	bind_loop(hookservice, head_bobbing_bind, NULL, 0);
 	bind_loop(hookservice, automatic_doors_bind, NULL, 0);
+	bind_loop(hookservice, minimap_bind, NULL, 0);
 
 	mlx_set_mouse_pos(g_mlx, 0, 0);
 	// mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
