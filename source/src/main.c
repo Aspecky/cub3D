@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/10 15:13:59 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/10 16:30:53 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 
 mlx_t *g_mlx;
 mlx_image_t *g_img;
-mlx_image_t *g_minimap;
+struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_camera g_camera;
@@ -88,25 +88,34 @@ static mlx_t *open_scaled_window(const char *title)
 
 static void draw_floor_and_ceiling(void)
 {
-	uint32_t x;
-	uint32_t y;
-	uint32_t half_height;
+    uint32_t	i;
+    uint32_t	half_size;
+    uint32_t	total_size;
+    uint8_t		*pixels;
 
-	half_height = g_img->height / 2;
-	y = 0;
-	while (y < g_img->height)
-	{
-		x = 0;
-		while (x < g_img->width)
-		{
-			if (y < half_height)
-				mlx_put_pixel(g_img, x, y, g_theme.ceiling);
-			else
-				mlx_put_pixel(g_img, x, y, g_theme.floor);
-			x++;
-		}
-		y++;
-	}
+    pixels = g_img->pixels;
+    half_size = g_img->width * (g_img->height / 2);
+    total_size = g_img->width * g_img->height;
+    
+    // Ceiling (first half)
+    i = 0;
+    while (i < half_size)
+    {
+        pixels[i * 4 + 0] = (g_theme.ceiling >> 24) & 0xFF;
+        pixels[i * 4 + 1] = (g_theme.ceiling >> 16) & 0xFF;
+        pixels[i * 4 + 2] = (g_theme.ceiling >> 8) & 0xFF;
+        pixels[i * 4 + 3] = 0xFF;
+        i++;
+    }
+    // Floor (second half)
+    while (i < total_size)
+    {
+        pixels[i * 4 + 0] = (g_theme.floor >> 24) & 0xFF;
+        pixels[i * 4 + 1] = (g_theme.floor >> 16) & 0xFF;
+        pixels[i * 4 + 2] = (g_theme.floor >> 8) & 0xFF;
+        pixels[i * 4 + 3] = 0xFF;
+        i++;
+    }
 }
 
 static mlx_texture_t *tile_type_to_texture(t_raycast_result ray,
@@ -258,6 +267,19 @@ static void load_view_model(void)
 		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
 }
 
+static void init_minimap(void)
+{
+	uint32_t	height;
+
+	height = (uint32_t)((double)g_img->height * MINIMAP_SCALE);
+	g_minimap.img = mlx_new_image(g_mlx, height, height);
+	g_minimap.tile_size = (int)((double)height * MINIMAP_CELL_SCALE);
+	g_minimap.tiles_visible = (int)height / g_minimap.tile_size;
+	g_minimap.radius = (int)height / 2;
+	g_minimap.center = (t_ivector2){(int)height / 2, (int)height / 2};
+	mlx_image_to_window(g_mlx, g_minimap.img, 10, 10);
+}
+
 int main(void)
 {
 	t_hookservice *hookservice;
@@ -319,13 +341,7 @@ int main(void)
 		}
 	}
 
-	{
-		uint32_t height;
-
-		height = (int)((double)g_img->height * MINIMAP_SCALE);
-		g_minimap = mlx_new_image(g_mlx, height, height);
-		mlx_image_to_window(g_mlx, g_minimap, 10, 10);
-	}
+	init_minimap();
 
 	hookservice = hookservice_init(g_mlx);
 	bind_key(hookservice, close_window_bind, NULL,
