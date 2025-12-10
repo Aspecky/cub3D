@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/07 17:33:36 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/10 15:13:59 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
 double world_map[][7] = {
-	{1, 1, 1, 1, 1, 1, 1},		//
-	{1, 1, 0, 0, 0, 0, 1},		//
-	{1, 1, 0, 0, 0, 0, 1},		//
-	{1, 1, 0, 0, 0, 0, 1},		//
-	{1, 1.0001, 2, 1, 1, 0, 1}, //
-	{1, 0, 0, 0, 1, 2, 1},		//
-	{1.8, 0, 0, 0, 0, 0, 1},	//
-	{1, 1, 1, 1, 1, 1, 1},		//
+	{1, 1, 1, 1, 1, 1, 1}, //
+	{1, 1, 0, 0, 0, 0, 1}, //
+	{1, 1, 0, 0, 0, 0, 1}, //
+	{1, 1, 0, 0, 0, 0, 1}, //
+	{1, 1, 2, 1, 1, 0, 1}, //
+	{1, 0, 0, 0, 1, 2, 1}, //
+	{1, 0, 0, 0, 0, 0, 1}, //
+	{1, 1, 1, 1, 1, 1, 1}, //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
@@ -71,13 +71,6 @@ struct s_camera g_camera;
 struct s_view_model g_view_model;
 struct s_doors g_doors;
 
-/*
-	1920x1080
-	1920 * 0.7 = 1344
-	898 * 0.7 = 756
-
-
-*/
 static mlx_t *open_scaled_window(const char *title)
 {
 	mlx_t *mlx;
@@ -342,6 +335,7 @@ int main(void)
 	bind_loop(hookservice, head_bobbing_bind, NULL, 0);
 	bind_loop(hookservice, automatic_doors_bind, NULL, 0);
 	bind_loop(hookservice, minimap_bind, NULL, 0);
+	bind_loop(hookservice, fps_counter_bind, NULL, 0);
 
 	mlx_set_mouse_pos(g_mlx, 0, 0);
 	// mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
