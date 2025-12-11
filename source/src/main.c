@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/10 16:53:08 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 00:53:07 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,23 @@
 // 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-double world_map[][7] = {
-	{1, 1, 1, 1, 1, 1, 1}, //
-	{1, 1, 0, 0, 0, 0, 1}, //
-	{1, 1, 0, 0, 0, 0, 1}, //
-	{1, 1, 0, 0, 0, 0, 1}, //
-	{1, 1, 2, 1, 1, 0, 1}, //
-	{1, 0, 0, 0, 1, 2, 1}, //
-	{1, 0, 1, 0, 0, 0, 1}, //
-	// {1.5, 1.5, 1.5, 0, 0, 0, 1}, //
-	{1, 1, 1, 1, 1, 1, 1}, //
+// double world_map[][7] = {
+// 	{1, 1, 1, 1, 1, 1, 1}, //
+// 	{1, 1, 0, 0, 0, 0, 1}, //
+// 	{1, 1, 0, 0, 0, 0, 1}, //
+// 	{1, 1, 0, 0, 0, 0, 1}, //
+// 	{1, 1, 2, 1, 1, 0, 1}, //
+// 	{1, 0, 0, 0, 1, 2, 1}, //
+// 	// {1, 0, 1, 0, 0, 0, 1}, //
+// 	{1.1, 1.2, 1.3, 1.4, 1.5, 0, 1}, //
+// 	{1, 1, 1, 1, 1, 1, 1},			 //
+// };
+double world_map[][5] = {
+	{1, 1, 1, 1, 1},   //
+	{1.5, 1.5, 1, 1, 1},   //
+	{1.5, 1.5, 0, 1, 1}, //
+	{1.5, 1.5, 1, 1, 1}, //
+	{1, 1, 1, 1, 1},   //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
@@ -92,40 +99,28 @@ static void draw_floor_and_ceiling(void)
 	uint32_t i;
 	uint32_t half_size;
 	uint32_t total_size;
-	uint8_t *pixels;
-	uint8_t ceil_r, ceil_g, ceil_b;
-	uint8_t floor_r, floor_g, floor_b;
+	uint32_t *pixels;
+	uint32_t ceil_color;
+	uint32_t floor_color;
 
-	pixels = g_img->pixels;
+	pixels = (uint32_t *)g_img->pixels;
 	half_size = g_img->width * (g_img->height / 2);
 	total_size = g_img->width * g_img->height;
 
-	ceil_r = (g_theme.ceiling >> 24) & 0xFF;
-	ceil_g = (g_theme.ceiling >> 16) & 0xFF;
-	ceil_b = (g_theme.ceiling >> 8) & 0xFF;
-	floor_r = (g_theme.floor >> 24) & 0xFF;
-	floor_g = (g_theme.floor >> 16) & 0xFF;
-	floor_b = (g_theme.floor >> 8) & 0xFF;
+	ceil_color = ((g_theme.ceiling >> 24) & 0xFF) |
+				 ((g_theme.ceiling >> 8) & 0xFF00) |
+				 ((g_theme.ceiling << 8) & 0xFF0000) | 0xFF000000;
+	floor_color = ((g_theme.floor >> 24) & 0xFF) |
+				  ((g_theme.floor >> 8) & 0xFF00) |
+				  ((g_theme.floor << 8) & 0xFF0000) | 0xFF000000;
 
 	// Ceiling (first half)
 	i = 0;
 	while (i < half_size)
-	{
-		pixels[i * 4 + 0] = ceil_r;
-		pixels[i * 4 + 1] = ceil_g;
-		pixels[i * 4 + 2] = ceil_b;
-		pixels[i * 4 + 3] = 0xFF;
-		i++;
-	}
+		pixels[i++] = ceil_color;
 	// Floor (second half)
 	while (i < total_size)
-	{
-		pixels[i * 4 + 0] = floor_r;
-		pixels[i * 4 + 1] = floor_g;
-		pixels[i * 4 + 2] = floor_b;
-		pixels[i * 4 + 3] = 0xFF;
-		i++;
-	}
+		pixels[i++] = floor_color;
 }
 
 static mlx_texture_t *tile_type_to_texture(t_raycast_result ray,
@@ -165,11 +160,11 @@ static void main_loop(void *arg)
 	img_pixels = g_img->pixels;
 
 	draw_floor_and_ceiling();
-
+	
 	while (x < img_width)
 	{
 		double camX = 2.0 * x / img_width - 1;
-
+		
 		t_raycast_result rays[10];
 		double distances[10];
 
@@ -223,13 +218,12 @@ static void main_loop(void *arg)
 			uint32_t tex_height = tex->height;
 			uint8_t *tex_pixels = tex->pixels;
 
-			// calculate value of wallX
-			double wall_x; // where exactly the wall was hit
+			double wall_x;
 			if (ray.side == 0)
 				wall_x = ray.position.y;
 			else
 				wall_x = ray.position.x;
-			wall_x -= floor((wall_x));
+			wall_x -= floor(wall_x);
 
 			uint32_t tex_x = (uint32_t)(wall_x * tex_width);
 			if (ray.side == 0 && raydir.x > 0)
@@ -239,33 +233,53 @@ static void main_loop(void *arg)
 
 			double step = (double)tex_height / lineHeight;
 			double texPos = (drawStart - h_half + lineHeight_half) * step;
-			double new_alpha = ray.tile_opacity;
-			double inv_alpha = 1.0 - new_alpha;
 			uint32_t tex_height_mask = tex_height - 1;
 
-			for (int y = drawStart; y < drawEnd; y++)
+			if (rays_count == 1)
 			{
-				uint32_t tex_y = (uint32_t)texPos & tex_height_mask;
-				texPos += step;
+				uint8_t *img_ptr = img_pixels + (drawStart * img_width + x) * 4;
+				uint32_t img_stride = img_width * 4;
+				uint8_t *tex_col = tex_pixels + tex_x * tex_height * 4;
 
-				uint32_t img_idx = (y * img_width + x) * 4;
-				uint32_t tex_idx = (tex_y * tex_width + tex_x) * 4;
+				for (int y = drawStart; y < drawEnd; y++)
+				{
+					uint32_t tex_y = (uint32_t)texPos & tex_height_mask;
+					texPos += step;
 
-				uint8_t cur_red = img_pixels[img_idx];
-				uint8_t cur_grn = img_pixels[img_idx + 1];
-				uint8_t cur_blu = img_pixels[img_idx + 2];
+					uint8_t *tex_ptr = tex_col + tex_y * 4;
 
-				uint8_t new_red = tex_pixels[tex_idx];
-				uint8_t new_grn = tex_pixels[tex_idx + 1];
-				uint8_t new_blu = tex_pixels[tex_idx + 2];
+					img_ptr[0] = tex_ptr[0];
+					img_ptr[1] = tex_ptr[1];
+					img_ptr[2] = tex_ptr[2];
+					img_ptr[3] = 255;
 
-				img_pixels[img_idx + 0] =
-					new_red * new_alpha + cur_red * inv_alpha;
-				img_pixels[img_idx + 1] =
-					new_grn * new_alpha + cur_grn * inv_alpha;
-				img_pixels[img_idx + 2] =
-					new_blu * new_alpha + cur_blu * inv_alpha;
-				img_pixels[img_idx + 3] = 255;
+					img_ptr += img_stride;
+				}
+			} else
+			{
+				uint32_t new_alpha = (uint32_t)(ray.tile_opacity * 256);
+				uint32_t inv_alpha = 256 - new_alpha;
+				uint8_t *img_ptr = img_pixels + (drawStart * img_width + x) * 4;
+				uint32_t img_stride = img_width * 4;
+				uint8_t *tex_col = tex_pixels + tex_x * tex_height * 4;
+
+				for (int y = drawStart; y < drawEnd; y++)
+				{
+					uint32_t tex_y = (uint32_t)texPos & tex_height_mask;
+					texPos += step;
+
+					uint8_t *tex_ptr = tex_col + tex_y * 4;
+
+					img_ptr[0] =
+						(tex_ptr[0] * new_alpha + img_ptr[0] * inv_alpha) >> 8;
+					img_ptr[1] =
+						(tex_ptr[1] * new_alpha + img_ptr[1] * inv_alpha) >> 8;
+					img_ptr[2] =
+						(tex_ptr[2] * new_alpha + img_ptr[2] * inv_alpha) >> 8;
+					img_ptr[3] = 255;
+
+					img_ptr += img_stride;
+				}
 			}
 		}
 
@@ -309,7 +323,8 @@ int main(void)
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 
-	g_camera.pos = (t_vector2){3.5, 1.5};
+	// g_camera.pos = (t_vector2){5.5, 1.5};
+	g_camera.pos = (t_vector2){2.5, 2.5};
 	g_camera.dir = (t_vector2){-1, 0};
 	g_camera.plane = (t_vector2){0, 0.66};
 	load_view_model();
@@ -325,6 +340,11 @@ int main(void)
 	mlx_resize_texture(g_mlx, g_theme.ea, 64, 64);
 	mlx_resize_texture(g_mlx, g_theme.so, 64, 64);
 	mlx_resize_texture(g_mlx, g_theme.we, 64, 64);
+	transpose_texture(g_theme.no);
+	transpose_texture(g_theme.ea);
+	transpose_texture(g_theme.so);
+	transpose_texture(g_theme.we);
+	transpose_texture(g_theme.door);
 
 	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 	g_map.height = sizeof(world_map) / sizeof(world_map[0]);

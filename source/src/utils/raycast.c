@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:47:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/07 22:44:48 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/10 22:34:37 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 	if (direction.y != 0)
 		ray.stepSize.y = fabs(1 / direction.y);
 
-	// t_ivector2 mapPos = {(int)(origin.x), (int)(origin.y)};
-	t_ivector2 mapPos = {(int)floor(origin.x), (int)floor(origin.y)};
+	t_ivector2 mapPos = {(int)(origin.x), (int)(origin.y)};
+	// t_ivector2 mapPos = {(int)floor(origin.x), (int)floor(origin.y)};
 	t_ivector2 step = {0, 0};
 
 	if (direction.x < 0)
@@ -68,17 +68,18 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 		}
 		if (ray.distance >= distance)
 			break;
+		int idx = mapPos.x * g_map.height + mapPos.y;
 		if (mapPos.x >= 0 && mapPos.x < g_map.width && mapPos.y >= 0 &&
 			mapPos.y < g_map.height &&
-			g_map.buffer[mapPos.x * g_map.height + mapPos.y].tile_type > 0)
+			g_map.buffer[idx].tile_type > 0)
 		{
 			ray.hit = true;
 			ray.position =
 				vector2_add(origin, vector2_scale(direction, ray.distance));
 			ray.tile_type =
-				g_map.buffer[mapPos.x * g_map.height + mapPos.y].tile_type;
+				g_map.buffer[idx].tile_type;
 			ray.tile_opacity =
-				g_map.buffer[mapPos.x * g_map.height + mapPos.y].opacity;
+				g_map.buffer[idx].opacity;
 		}
 	}
 	return (ray);
