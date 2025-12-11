@@ -6,12 +6,13 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 18:05:23 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 21:10:09 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bindings.h"
 #include "consts.h"
+#include "loaders.h"
 #include "types.h"
 #include "utils.h"
 #include <MLX42/MLX42.h>
@@ -72,7 +73,8 @@ int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 
 mlx_t *g_mlx;
 mlx_image_t *g_img;
-struct s_minimap g_minimap;
+t_hookservice *g_hookservice;
+// struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_camera g_camera;
@@ -302,23 +304,8 @@ static void load_view_model(void)
 		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
 }
 
-static void init_minimap(void)
-{
-	uint32_t height;
-
-	height = (uint32_t)((double)g_img->height * MINIMAP_SCALE);
-	g_minimap.img = mlx_new_image(g_mlx, height, height);
-	g_minimap.tile_size = (int)((double)height * MINIMAP_CELL_SCALE);
-	g_minimap.tiles_visible = (int)height / g_minimap.tile_size;
-	g_minimap.radius = (int)height / 2;
-	g_minimap.center = (t_ivector2){(int)height / 2, (int)height / 2};
-	mlx_image_to_window(g_mlx, g_minimap.img, 10, 10);
-}
-
 int main(void)
 {
-	t_hookservice *hookservice;
-
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
@@ -382,17 +369,17 @@ int main(void)
 		}
 	}
 
-	init_minimap();
 
-	hookservice = hookservice_init(g_mlx);
-	bind_key(hookservice, close_window_bind, NULL,
+	g_hookservice = hookservice_init(g_mlx);
+	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
-	bind_loop(hookservice, movement_bind, &g_camera, 0);
-	bind_loop(hookservice, main_loop, &g_camera, 0);
-	bind_loop(hookservice, head_bobbing_bind, NULL, 0);
-	bind_loop(hookservice, automatic_doors_bind, NULL, 0);
-	bind_loop(hookservice, minimap_bind, NULL, 0);
-	bind_loop(hookservice, fps_counter_bind, NULL, 0);
+	bind_loop(g_hookservice, movement_bind, &g_camera, 0);
+	bind_loop(g_hookservice, main_loop, &g_camera, 0);
+	bind_loop(g_hookservice, head_bobbing_bind, NULL, 0);
+	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
+	// bind_loop(hookservice, minimap_bind, NULL, 0);
+	load_minimap();
+	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
 
 	mlx_set_mouse_pos(g_mlx, 0, 0);
 	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/09 21:10:50 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 21:09:09 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <MLX42/MLX42.h>
 # include <mlx_aux/Color4.h>
 # include <mlx_aux/Vector2.h>
+# include <mlx_aux/HookService.h>
 
 # define MONITOR_SCALE 0.75
 # define WALKSPEED 3 // squares / second
@@ -33,15 +34,7 @@
 
 extern mlx_t		*g_mlx;
 extern mlx_image_t	*g_img;
-
-extern struct s_minimap
-{
-	mlx_image_t	*img;
-	int			tile_size;
-	int			tiles_visible;
-	int			radius;
-	t_ivector2	center;
-}	g_minimap;
+extern t_hookservice	*g_hookservice;
 
 extern struct s_camera
 {
