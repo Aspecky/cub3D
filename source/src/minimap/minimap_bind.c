@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:47:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 21:06:37 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 22:50:31 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 static uint32_t get_tile_color(enum e_tile tile_type)
 {
 	if (tile_type == CELL_WALL)
-		return (color4_from_rgb((t_color_rgb){100, 100, 100, 255}));
+		return (MINIMAP_COLOR_WALL);
 	else if (tile_type == CELL_DOOR)
-		return (color4_from_rgb((t_color_rgb){139, 69, 19, 255}));
-	return (color4_from_rgb((t_color_rgb){200, 200, 200, 255}));
+		return (MINIMAP_COLOR_DOOR);
+	return (MINIMAP_COLOR_FLOOR);
 }
 
 static void draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color)
@@ -91,7 +91,7 @@ static void draw_player_marker(void)
 			mlx_put_pixel(g_minimap.img,
 						  g_minimap.center.x - marker_size / 2 + x,
 						  g_minimap.center.y - marker_size / 2 + y,
-						  color4_from_rgb((t_color_rgb){255, 0, 0, 255}));
+						  MINIMAP_COLOR_PLAYER);
 			x++;
 		}
 		y++;

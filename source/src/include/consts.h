@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 21:09:09 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 22:52:24 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 
 # define MINIMAP_SCALE 0.3
 # define MINIMAP_CELL_SCALE 0.1
+# define MINIMAP_COLOR_WALL 0x00CED1FF
+# define MINIMAP_COLOR_DOOR 0xFF69B4FF
+# define MINIMAP_COLOR_FLOOR 0xFFD700FF
+# define MINIMAP_COLOR_PLAYER 0xFF1493FF
 
 extern mlx_t		*g_mlx;
 extern mlx_image_t	*g_img;

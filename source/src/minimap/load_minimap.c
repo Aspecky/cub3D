@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 20:55:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 22:32:15 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 22:44:13 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void init_minimap(void)
 
 	frame_height = (uint32_t)((double)g_img->height * MINIMAP_SCALE);
 	frame_offset = (t_ivector2){(int)((double)g_img->width * MINIMAP_OFFSET),
-						  (int)((double)g_img->height * MINIMAP_OFFSET)};
+								(int)((double)g_img->height * MINIMAP_OFFSET)};
 
 	frame_tex = mlx_load_png("assets/porthole_window.png");
 	frame_img = mlx_texture_to_image(g_mlx, frame_tex);
@@ -46,16 +46,19 @@ static void init_minimap(void)
 
 	minimap_height = (uint32_t)((double)frame_height * MINIMAP_CONTENT_SCALE);
 	minimap_offset = (t_ivector2){
-		frame_offset.x + (int)((frame_height - minimap_height) / 2) + (int)(frame_height * MINIMAP_OFFSET_X),
-		frame_offset.y + (int)((frame_height - minimap_height) / 2) + (int)(frame_height * MINIMAP_OFFSET_Y)
-	};
+		frame_offset.x + (int)((frame_height - minimap_height) / 2) +
+			(int)(frame_height * MINIMAP_OFFSET_X),
+		frame_offset.y + (int)((frame_height - minimap_height) / 2) +
+			(int)(frame_height * MINIMAP_OFFSET_Y)};
 
 	g_minimap.img = mlx_new_image(g_mlx, minimap_height, minimap_height);
 	g_minimap.tile_size = (int)((double)minimap_height * MINIMAP_CELL_SCALE);
 	g_minimap.tiles_visible = (int)minimap_height / g_minimap.tile_size;
 	g_minimap.radius = (int)minimap_height / 2;
-	g_minimap.center = (t_ivector2){(int)minimap_height / 2, (int)minimap_height / 2};
-	mlx_image_to_window(g_mlx, g_minimap.img, minimap_offset.x, minimap_offset.y);
+	g_minimap.center =
+		(t_ivector2){(int)minimap_height / 2, (int)minimap_height / 2};
+	mlx_image_to_window(g_mlx, g_minimap.img, minimap_offset.x,
+						minimap_offset.y);
 
 	swap_int(&frame_img->instances[0].z, &g_minimap.img->instances[0].z);
 }
