@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 20:55:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 22:44:13 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 23:44:51 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ bool load_minimap(void)
 {
 	init_minimap();
 	bind_loop(g_hookservice, minimap_bind, NULL, 0);
-
 	return (true);
 }

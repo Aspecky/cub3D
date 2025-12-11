@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:47:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 22:50:31 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 23:54:11 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 static uint32_t get_tile_color(enum e_tile tile_type)
 {
 	if (tile_type == CELL_WALL)
-		return (MINIMAP_COLOR_WALL);
+		return (color4_from_hex(MINIMAP_COLOR_WALL));
 	else if (tile_type == CELL_DOOR)
-		return (MINIMAP_COLOR_DOOR);
-	return (MINIMAP_COLOR_FLOOR);
+		return (color4_from_hex(MINIMAP_COLOR_DOOR));
+	return (color4_from_hex(MINIMAP_COLOR_FLOOR));
 }
 
 static void draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color)
@@ -75,23 +75,32 @@ static void draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color)
 
 static void draw_player_marker(void)
 {
-	uint32_t marker_size;
-	uint32_t x;
-	uint32_t y;
+	int marker_radius;
+	int x;
+	int y;
+	int dx;
+	int dy;
+	int radius_sq;
 
-	marker_size = g_minimap.tile_size / 3;
-	if (marker_size < 2)
-		marker_size = 2;
-	y = 0;
-	while (y < marker_size)
+	marker_radius = g_minimap.tile_size / 6;
+	if (marker_radius < 2)
+		marker_radius = 2;
+	radius_sq = marker_radius * marker_radius;
+	y = -marker_radius;
+	while (y <= marker_radius)
 	{
-		x = 0;
-		while (x < marker_size)
+		x = -marker_radius;
+		while (x <= marker_radius)
 		{
-			mlx_put_pixel(g_minimap.img,
-						  g_minimap.center.x - marker_size / 2 + x,
-						  g_minimap.center.y - marker_size / 2 + y,
-						  MINIMAP_COLOR_PLAYER);
+			dx = x;
+			dy = y;
+			if (dx * dx + dy * dy <= radius_sq)
+			{
+				mlx_put_pixel(g_minimap.img,
+							  g_minimap.center.x + x,
+							  g_minimap.center.y + y,
+							  color4_from_hex(MINIMAP_COLOR_PLAYER));
+			}
 			x++;
 		}
 		y++;
