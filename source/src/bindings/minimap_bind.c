@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:47:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/09 21:10:50 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/11 00:43:37 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,20 @@ static void draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color)
 	int			draw_y;
 	int			dx;
 	int			dy;
+	int			radius_sq;
+	uint32_t	img_width;
+	uint32_t	img_height;
+	uint8_t		*pixels;
+	uint8_t		r, g, b, a;
 
+	img_width = g_minimap.img->width;
+	img_height = g_minimap.img->height;
+	pixels = g_minimap.img->pixels;
+	radius_sq = g_minimap.radius * g_minimap.radius;
+	r = (color >> 24) & 0xFF;
+	g = (color >> 16) & 0xFF;
+	b = (color >> 8) & 0xFF;
+	a = color & 0xFF;
 	y = 0;
 	while (y < tile_size)
 	{
@@ -45,10 +58,16 @@ static void draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color)
 			draw_y = px_y + (int)y;
 			dx = draw_x - g_minimap.center.x;
 			dy = draw_y - g_minimap.center.y;
-			if (draw_x >= 0 && draw_x < (int)g_minimap.img->width
-				&& draw_y >= 0 && draw_y < (int)g_minimap.img->height
-				&& dx * dx + dy * dy < g_minimap.radius * g_minimap.radius)
-				mlx_put_pixel(g_minimap.img, draw_x, draw_y, color);
+			if (draw_x >= 0 && draw_x < (int)img_width
+				&& draw_y >= 0 && draw_y < (int)img_height
+				&& dx * dx + dy * dy < radius_sq)
+			{
+				uint8_t *ptr = pixels + ((draw_y * img_width + draw_x) * 4);
+				ptr[0] = r;
+				ptr[1] = g;
+				ptr[2] = b;
+				ptr[3] = a;
+			}
 			x++;
 		}
 		y++;

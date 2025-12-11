@@ -8,7 +8,7 @@ BIN_BONUS := $(BIN)_bonus
 
 LIBMLX := $(shell realpath ./libmlx42.a)
 
-CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O1
+CFLAGS := -Wall -Wextra -fsanitize=address -ggdb3 -O2
 
 all: $(BUILD_DIR) $(DEBUG_DIR)
 	rm -rf $(NAME)
@@ -27,6 +27,9 @@ $(DEBUG_DIR):
 
 val:
 	make all -s "CFLAGS = $(filter-out -fsanitize=address,$(CFLAGS))"
+
+perf:
+	make all -s "CFLAGS = -Wall -Wextra -g3 -O2"
 
 clean:
 	make clean -C $(BIN_DIR)
