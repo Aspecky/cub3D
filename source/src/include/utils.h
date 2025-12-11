@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:48:29 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/07 15:56:50 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/10 21:54:20 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 #include <stdbool.h>
 #include <mlx_aux/Vector2.h>
+#include <MLX42/MLX42.h>
 #include "types.h"
+
+void	transpose_texture(mlx_texture_t *tex);
 
 typedef struct s_raycast_result
 {
