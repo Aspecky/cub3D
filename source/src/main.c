@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/12 00:04:03 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/12 01:35:34 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,19 +302,6 @@ static void load_view_model(void)
 	g_view_model.inst = img->instances + id;
 	g_view_model.og_pos =
 		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
-}
-
-static void init_minimap(void)
-{
-	uint32_t height;
-
-	height = (uint32_t)((double)g_img->height * MINIMAP_SCALE);
-	g_minimap.img = mlx_new_image(g_mlx, height, height);
-	g_minimap.tile_size = (int)((double)height * MINIMAP_CELL_SCALE);
-	g_minimap.tiles_visible = (int)height / g_minimap.tile_size;
-	g_minimap.radius = (int)height / 2;
-	g_minimap.center = (t_ivector2){(int)height / 2, (int)height / 2};
-	mlx_image_to_window(g_mlx, g_minimap.img, 10, 10);
 }
 
 int main(void)
