@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bindings.h                                         :+:      :+:    :+:   */
+/*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/11 20:49:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/13 17:21:04 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/13 00:52:49 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/13 17:20:53 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BINDINGS_H
-# define BINDINGS_H
+#ifndef CAMERA_H
+# define CAMERA_H
 
-#include <MLX42/MLX42.h>
-
-void	close_window_bind(mlx_key_data_t keydata, void *param);
-void	movement_bind(void *param);
-void	head_bobbing_bind(void *param);
-void	automatic_doors_bind(void *param);
-void	minimap_bind(void *param);
-void	fps_counter_bind(void *param);
+void cursor_hook(double xpos, double ypos, void *param);
 
 #endif

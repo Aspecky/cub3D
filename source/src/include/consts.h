@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/12 00:04:25 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/13 17:10:54 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@
 # include <mlx_aux/HookService.h>
 
 # define MONITOR_SCALE 0.75
+# define PLANE_SCALE 0.45 // Camera plane scale (0.5 = 90° FOV, smaller = wider walls)
 # define WALKSPEED 3 // squares / second
 # define ROTSPEED 3    // radians / second
 # define HITBOX_RADIUS 0.1
-# define CURSOR_SPEED 0.01 // radians / pixel
 # define COLLISIONS true
+
+# define CURSOR_SPEED 0.01 // radians / pixel
+# define MAX_PITCH_HSCALE 0.4 // ±(Sreen_Height * MAX_PITCH_HSCALE)
 
 # define VIEW_MODEL_SCALE 0.7
 # define VIEW_MODEL_DEPTH 100 // pixels
@@ -45,6 +48,7 @@ extern struct s_camera
 	t_vector2	pos;
 	t_vector2	dir;
 	t_vector2	plane;
+	int			pitch;
 }	g_camera;
 
 extern struct s_map

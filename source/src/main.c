@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/12 01:35:34 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/13 17:21:15 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@
 // 	{1, 1, 1, 1, 1, 1, 1},			 //
 // };
 double world_map[][5] = {
-	{1, 1, 1, 1, 1},   //
-	{1.5, 1.5, 1, 1, 1},   //
-	{1.5, 1.5, 0, 1, 1}, //
-	{1.5, 1.5, 1, 1, 1}, //
-	{1, 1, 1, 1, 1},   //
+	{1, 1, 1, 1, 1}, //
+	{1, 0, 0, 0, 1}, //
+	{1, 0, 0, 0, 1}, //
+	{1, 0, 0, 0, 1}, //
+	{1, 1, 1, 1, 1}, //
 };
 int rows = sizeof(world_map) / sizeof(world_map[0]);
 int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
@@ -77,7 +77,6 @@ t_hookservice *g_hookservice;
 // struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
-struct s_camera g_camera;
 struct s_view_model g_view_model;
 struct s_doors g_doors;
 
@@ -99,14 +98,14 @@ static mlx_t *open_scaled_window(const char *title)
 static void draw_floor_and_ceiling(void)
 {
 	uint32_t i;
-	uint32_t half_size;
+	uint32_t ceil_end;
 	uint32_t total_size;
 	uint32_t *pixels;
 	uint32_t ceil_color;
 	uint32_t floor_color;
 
 	pixels = (uint32_t *)g_img->pixels;
-	half_size = g_img->width * (g_img->height / 2);
+	ceil_end = g_img->width * (g_img->height / 2 + g_camera.pitch);
 	total_size = g_img->width * g_img->height;
 
 	ceil_color = ((g_theme.ceiling >> 24) & 0xFF) |
@@ -118,7 +117,7 @@ static void draw_floor_and_ceiling(void)
 
 	// Ceiling (first half)
 	i = 0;
-	while (i < half_size)
+	while (i < ceil_end && i < total_size)
 		pixels[i++] = ceil_color;
 	// Floor (second half)
 	while (i < total_size)
@@ -162,11 +161,11 @@ static void main_loop(void *arg)
 	img_pixels = g_img->pixels;
 
 	draw_floor_and_ceiling();
-	
+
 	while (x < img_width)
 	{
 		double camX = 2.0 * x / img_width - 1;
-		
+
 		t_raycast_result rays[10];
 		double distances[10];
 
@@ -205,13 +204,13 @@ static void main_loop(void *arg)
 			ray = rays[i];
 
 			double total_dist = distances[i] + ray.distance;
-			int lineHeight = (int)(h / total_dist);
+			int lineHeight = (int)(h / total_dist * ((double)img_width / img_height));
 			int lineHeight_half = lineHeight / 2;
 
-			int drawStart = -lineHeight_half + h_half;
+			int drawStart = -lineHeight_half + h_half + g_camera.pitch;
 			if (drawStart < 0)
 				drawStart = 0;
-			int drawEnd = lineHeight_half + h_half;
+			int drawEnd = lineHeight_half + h_half + g_camera.pitch;
 			if (drawEnd >= h)
 				drawEnd = h - 1;
 
@@ -234,7 +233,7 @@ static void main_loop(void *arg)
 				tex_x = tex_width - tex_x - 1;
 
 			double step = (double)tex_height / lineHeight;
-			double texPos = (drawStart - h_half + lineHeight_half) * step;
+			double texPos = (drawStart - g_camera.pitch - h_half + lineHeight_half) * step;
 			uint32_t tex_height_mask = tex_height - 1;
 
 			if (rays_count == 1)
@@ -309,11 +308,9 @@ int main(void)
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
+	g_hookservice = hookservice_init(g_mlx);
 
-	// g_camera.pos = (t_vector2){5.5, 1.5};
-	g_camera.pos = (t_vector2){2.5, 2.5};
-	g_camera.dir = (t_vector2){-1, 0};
-	g_camera.plane = (t_vector2){0, 0.66};
+	load_camera((t_vector2){2, 1.5}, (t_vector2){-1, 0});
 	load_view_model();
 
 	g_theme.ceiling = color4_from_hex("87CEEB");
@@ -369,21 +366,14 @@ int main(void)
 		}
 	}
 
-
-	g_hookservice = hookservice_init(g_mlx);
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
 	bind_loop(g_hookservice, movement_bind, &g_camera, 0);
 	bind_loop(g_hookservice, main_loop, &g_camera, 0);
 	bind_loop(g_hookservice, head_bobbing_bind, NULL, 0);
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
-	// bind_loop(hookservice, minimap_bind, NULL, 0);
 	load_minimap();
 	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
-
-	mlx_set_mouse_pos(g_mlx, 0, 0);
-	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
-	mlx_cursor_hook(g_mlx, cursor_hook, 0);
 
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);

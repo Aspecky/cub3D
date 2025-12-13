@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cursor_hook.c                                      :+:      :+:    :+:   */
+/*   load_camera.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/28 15:58:38 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/11/29 15:49:50 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/12 19:59:20 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/13 17:22:54 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
+#include "camera.h"
 #include "consts.h"
-#include <math.h>
-#include <MLX42/MLX42.h>
+#include "loaders.h"
 
-static double g_old_x = 0;
+struct s_camera g_camera;
 
-void cursor_hook(double xpos, double ypos, void *param)
+bool load_camera(t_vector2 position, t_vector2 direction)
 {
-	double delta_x;
-	double rads;
+	g_camera.plane =
+		(t_vector2){direction.y * PLANE_SCALE, -direction.x * PLANE_SCALE};
+	g_camera.pos = position;
+	g_camera.dir = direction;
+	g_camera.pitch = 0;
 
-	(void)param;
-	(void)ypos;
-	delta_x = -(xpos - g_old_x);
-	rads = delta_x * CURSOR_SPEED * g_mlx->delta_time;
-	g_camera.dir = vector2_rot(g_camera.dir, rads);
-	g_camera.plane = vector2_rot(g_camera.plane, rads);
-	g_old_x = xpos;
+	// mlx_set_mouse_pos(g_mlx, 0, 0);
+	mlx_set_cursor_mode(g_mlx, MLX_MOUSE_DISABLED);
+	mlx_cursor_hook(g_mlx, cursor_hook, 0);
+
+	return (true);
 }
