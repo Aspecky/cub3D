@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/13 17:10:54 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 15:25:53 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <mlx_aux/HookService.h>
 
 # define MONITOR_SCALE 0.75
-# define PLANE_SCALE 0.45 // Camera plane scale (0.5 = 90° FOV, smaller = wider walls)
+# define PLANE_SCALE 0.66 // Camera plane scale (0.5 = 90° FOV, smaller = wider walls)
 # define WALKSPEED 3 // squares / second
 # define ROTSPEED 3    // radians / second
 # define HITBOX_RADIUS 0.1
@@ -39,6 +39,13 @@
 # define MINIMAP_COLOR_FLOOR "#ffee67ff"
 # define MINIMAP_COLOR_PLAYER "#ff1493ff"
 
+# define JUMP_HEIGHT 0.5
+# define JUMP_TIME 0.5
+# define SQUAT_DEPTH 0.2
+# define SQUAT_TIME 0.1
+# define JUMP_BOOST_MAX 0.4
+# define JUMP_BOOST_TIME 1
+
 extern mlx_t		*g_mlx;
 extern mlx_image_t	*g_img;
 extern t_hookservice	*g_hookservice;
@@ -49,6 +56,8 @@ extern struct s_camera
 	t_vector2	dir;
 	t_vector2	plane;
 	int			pitch;
+	int			z;
+	double		walk_speed;
 }	g_camera;
 
 extern struct s_map

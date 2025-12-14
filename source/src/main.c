@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/13 17:21:15 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/13 22:08:48 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,13 +204,16 @@ static void main_loop(void *arg)
 			ray = rays[i];
 
 			double total_dist = distances[i] + ray.distance;
-			int lineHeight = (int)(h / total_dist * ((double)img_width / img_height));
+			int lineHeight =
+				(int)(h / total_dist * ((double)img_width / img_height));
 			int lineHeight_half = lineHeight / 2;
 
-			int drawStart = -lineHeight_half + h_half + g_camera.pitch;
+			int drawStart = -lineHeight_half + h_half + g_camera.pitch +
+							(int)(g_camera.z / total_dist);
 			if (drawStart < 0)
 				drawStart = 0;
-			int drawEnd = lineHeight_half + h_half + g_camera.pitch;
+			int drawEnd = lineHeight_half + h_half + g_camera.pitch +
+						  (int)(g_camera.z / total_dist);
 			if (drawEnd >= h)
 				drawEnd = h - 1;
 
@@ -233,7 +236,10 @@ static void main_loop(void *arg)
 				tex_x = tex_width - tex_x - 1;
 
 			double step = (double)tex_height / lineHeight;
-			double texPos = (drawStart - g_camera.pitch - h_half + lineHeight_half) * step;
+			double texPos =
+				(drawStart - g_camera.pitch - (int)(g_camera.z / total_dist) -
+				 h_half + lineHeight_half) *
+				step;
 			uint32_t tex_height_mask = tex_height - 1;
 
 			if (rays_count == 1)

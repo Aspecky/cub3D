@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/03 15:35:16 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 14:43:14 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void move_player(void)
 	walk_dir = vector2_unit(walk_dir);
 
 	double walkspeed;
-	walkspeed = WALKSPEED * dt;
+	walkspeed = g_camera.walk_speed * dt;
 
 	if (COLLISIONS)
 	{
