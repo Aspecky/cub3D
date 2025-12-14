@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:48:29 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/10 21:54:20 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:29:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <MLX42/MLX42.h>
 #include "types.h"
 
-void	transpose_texture(mlx_texture_t *tex);
+// void	transpose_texture(mlx_texture_t *tex);
 
 typedef struct s_raycast_result
 {
@@ -33,5 +33,6 @@ typedef struct s_raycast_result
 } t_raycast_result;
 
 t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance);
+mlx_texture_t *tile_type_to_texture(t_raycast_result ray, t_vector2 direction);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 15:58:38 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 16:13:10 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:26:02 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "camera.h"
+#include "bindings.h"
 #include "consts.h"
 #include <MLX42/MLX42.h>
 

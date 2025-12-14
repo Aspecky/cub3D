@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/13 22:08:48 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 19:03:57 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 mlx_t *g_mlx;
 mlx_image_t *g_img;
 t_hookservice *g_hookservice;
-// struct s_minimap g_minimap;
+struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_view_model g_view_model;
@@ -122,29 +122,6 @@ static void draw_floor_and_ceiling(void)
 	// Floor (second half)
 	while (i < total_size)
 		pixels[i++] = floor_color;
-}
-
-static mlx_texture_t *tile_type_to_texture(t_raycast_result ray,
-										   t_vector2 direction)
-{
-	if (ray.tile_type == CELL_WALL)
-	{
-		if (ray.side == 0)
-		{
-			if (direction.x < 0)
-				return g_theme.ea;
-			else
-				return g_theme.we;
-		} else
-		{
-			if (direction.y < 0)
-				return g_theme.no;
-			else
-				return g_theme.so;
-		}
-	} else if (ray.tile_type == CELL_DOOR)
-		return g_theme.door;
-	return (g_theme.no);
 }
 
 static void main_loop(void *arg)
@@ -294,47 +271,12 @@ static void main_loop(void *arg)
 	}
 }
 
-static void load_view_model(void)
-{
-	mlx_texture_t *tex = mlx_load_png("assets/view_model.png");
-	mlx_image_t *img = mlx_texture_to_image(g_mlx, tex);
-	double ratio = (double)img->height / img->width;
-	double width = (double)g_img->width * VIEW_MODEL_SCALE;
-	mlx_resize_image(img, width, width * ratio);
-	int id =
-		mlx_image_to_window(g_mlx, img, g_img->width / 2 - (img->width * 0.4),
-							g_img->height - img->height + VIEW_MODEL_DEPTH);
-	g_view_model.inst = img->instances + id;
-	g_view_model.og_pos =
-		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
-}
-
 int main(void)
 {
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 	g_hookservice = hookservice_init(g_mlx);
-
-	load_camera((t_vector2){2, 1.5}, (t_vector2){-1, 0});
-	load_view_model();
-
-	g_theme.ceiling = color4_from_hex("87CEEB");
-	g_theme.floor = color4_from_hex("9B7653");
-	g_theme.no = mlx_load_png("assets/North.png");
-	g_theme.ea = mlx_load_png("assets/East.png");
-	g_theme.so = mlx_load_png("assets/South.png");
-	g_theme.we = mlx_load_png("assets/West.png");
-	g_theme.door = mlx_load_png("assets/door.png");
-	mlx_resize_texture(g_mlx, g_theme.no, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.ea, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.so, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.we, 64, 64);
-	transpose_texture(g_theme.no);
-	transpose_texture(g_theme.ea);
-	transpose_texture(g_theme.so);
-	transpose_texture(g_theme.we);
-	transpose_texture(g_theme.door);
 
 	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 	g_map.height = sizeof(world_map) / sizeof(world_map[0]);
@@ -372,11 +314,14 @@ int main(void)
 		}
 	}
 
+	load_textures();
+	load_camera((t_vector2){2, 1.5}, (t_vector2){-1, 0});
+	load_view_model();
+
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
 	bind_loop(g_hookservice, movement_bind, &g_camera, 0);
 	bind_loop(g_hookservice, main_loop, &g_camera, 0);
-	bind_loop(g_hookservice, head_bobbing_bind, NULL, 0);
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 	load_minimap();
 	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:49:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/13 19:33:08 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:25:27 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ void	head_bobbing_bind(void *param);
 void	automatic_doors_bind(void *param);
 void	minimap_bind(void *param);
 void	fps_counter_bind(void *param);
+void	cursor_hook(double xpos, double ypos, void *param);
+void	jump_bind(void *param);
 
 #endif

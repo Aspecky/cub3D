@@ -6,12 +6,12 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:47:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/11 23:54:11 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:16:54 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "bindings.h"
 #include "consts.h"
-#include "minimap.h"
 #include "types.h"
 #include <math.h>
 #include <mlx_aux/Color4.h>
@@ -96,8 +96,7 @@ static void draw_player_marker(void)
 			dy = y;
 			if (dx * dx + dy * dy <= radius_sq)
 			{
-				mlx_put_pixel(g_minimap.img,
-							  g_minimap.center.x + x,
+				mlx_put_pixel(g_minimap.img, g_minimap.center.x + x,
 							  g_minimap.center.y + y,
 							  color4_from_hex(MINIMAP_COLOR_PLAYER));
 			}

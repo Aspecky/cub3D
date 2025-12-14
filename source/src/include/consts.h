@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 15:25:53 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 17:13:55 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@
 extern mlx_t		*g_mlx;
 extern mlx_image_t	*g_img;
 extern t_hookservice	*g_hookservice;
+
+extern struct s_minimap
+{
+	mlx_image_t	*img;
+	int			tile_size;
+	int			tiles_visible;
+	int			radius;
+	t_ivector2	center;
+}	g_minimap;
 
 extern struct s_camera
 {
