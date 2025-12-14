@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:20:04 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 15:25:53 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/14 16:04:40 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <MLX42/MLX42.h>
 #include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 static double lerp(double a, double b, double t)
 {
