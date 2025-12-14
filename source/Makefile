@@ -50,7 +50,7 @@ $(FTLIBC): $(shell find -L $(FTLIBC_DIR) -name '*.[ch]')
 	make -C $(FTLIBC_DIR) "CFLAGS := $(CFLAGS)"
 
 $(MLX_AUX): $(shell find -L $(MLX_AUX_DIR) -name '*.[ch]')
-	make -C $(MLX_AUX_DIR) "CFLAGS := $(CFLAGS)"
+	make -C $(MLX_AUX_DIR) "CFLAGS := $(CFLAGS)" "LIBMLX_DIR := $(abspath $(LIBMLX_DIR))"
 
 .PHONY: clean
 clean:
