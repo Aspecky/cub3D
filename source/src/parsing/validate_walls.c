@@ -28,8 +28,7 @@ int	validate_walls(t_parse_data *data)
 	{
 		if (data->map_lines[0][i] != '1' && data->map_lines[0][i] != ' ')
 		{
-			write(2, "Error\n", 6);
-			write(2, "Map not closed (top)\n", 21);
+			ft_dprintf(2, "Error\nMap not closed (top)\n");
 			return (0);
 		}
 		i++;
@@ -40,8 +39,7 @@ int	validate_walls(t_parse_data *data)
 		if (data->map_lines[last_row][i] != '1' && 
 			data->map_lines[last_row][i] != ' ')
 		{
-			write(2, "Error\n", 6);
-			write(2, "Map not closed (bottom)\n", 24);
+			ft_dprintf(2, "Error\nMap not closed (bottom)\n");
 			return (0);
 		}
 		i++;
@@ -59,8 +57,7 @@ int	validate_walls_sides(t_parse_data *data)
 	{
 		if (data->map_lines[i][0] != '1' && data->map_lines[i][0] != ' ')
 		{
-			write(2, "Error\n", 6);
-			write(2, "Map not closed (left)\n", 22);
+			ft_dprintf(2, "Error\nMap not closed (left)\n");
 			return (0);
 		}
 		len = ft_strlen(data->map_lines[i]);
@@ -69,8 +66,7 @@ int	validate_walls_sides(t_parse_data *data)
 			if (data->map_lines[i][len - 1] != '1' && 
 				data->map_lines[i][len - 1] != ' ')
 			{
-				write(2, "Error\n", 6);
-				write(2, "Map not closed (right)\n", 23);
+				ft_dprintf(2, "Error\nMap not closed (right)\n");
 				return (0);
 			}
 		}
@@ -78,8 +74,7 @@ int	validate_walls_sides(t_parse_data *data)
 	}
 	if (!check_internal_walls(data))
 	{
-		write(2, "Error\n", 6);
-		write(2, "Map has holes\n", 14);
+		ft_dprintf(2, "Error\nMap has holes\n");
 		return (0);
 	}
 	return (1);

@@ -15,7 +15,7 @@
 
 static void ft_putchar_fd(char c, int fd)
 {
-    write(fd, &c, 1);
+    ssize_t __attribute__((unused)) ret = write(fd, &c, 1);
 }
 
 static void ft_putstr_fd(char *s, int fd)
@@ -23,7 +23,9 @@ static void ft_putstr_fd(char *s, int fd)
     if (!s)
         return;
     while (*s)
-        write(fd, s++, 1);
+    {
+        ssize_t __attribute__((unused)) ret = write(fd, s++, 1);
+    }
 }
 
 static void ft_putnbr_fd(int n, int fd)

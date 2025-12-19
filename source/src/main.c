@@ -12,8 +12,6 @@
 
 #include "bindings.h"
 #include "consts.h"
-#include "loaders.h"
-#include "types.h"
 #include "utils.h"
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
@@ -295,109 +293,31 @@ static void main_loop(void *arg)
 	}
 }
 
-<<<<<<< HEAD
-static void load_view_model(void)
-{
-	mlx_texture_t *tex = mlx_load_png("assets/view_model.png");
-	mlx_image_t *img = mlx_texture_to_image(g_mlx, tex);
-	double ratio = (double)img->height / img->width;
-	double width = (double)g_img->width * VIEW_MODEL_SCALE;
-	mlx_resize_image(img, width, width * ratio);
-	int id =
-		mlx_image_to_window(g_mlx, img, g_img->width / 2 - (img->width * 0.4),
-							g_img->height - img->height + VIEW_MODEL_DEPTH);
-	g_view_model.inst = img->instances + id;
-	g_view_model.og_pos =
-		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
-}
 
-int main(void)
-{
-=======
 int main(int argc, char **argv)
 {
 	t_hookservice *hookservice;
-	 if (argc != 2)
-    {
-        ft_dprintf(2, "Usage: %s <map.cub>\n", argv[0]);
-        return (1);
-    }
-    
-    if (!parse_file(argv[1]))
-        return (1);
+	if (argc != 2)
+	{
+		ft_dprintf(2, "Usage: %s <map.cub>\n", argv[0]);
+		return (1);
+	}
 	
-
->>>>>>> origin/parsing
+	if (!parse_file(argv[1]))
+		return (1);
+	
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
-	g_hookservice = hookservice_init(g_mlx);
-
-	load_camera((t_vector2){2, 1.5}, (t_vector2){-1, 0});
-	load_view_model();
-
-	g_theme.ceiling = color4_from_hex("87CEEB");
-	g_theme.floor = color4_from_hex("9B7653");
-	g_theme.no = mlx_load_png("assets/North.png");
-	g_theme.ea = mlx_load_png("assets/East.png");
-	g_theme.so = mlx_load_png("assets/South.png");
-	g_theme.we = mlx_load_png("assets/West.png");
-	g_theme.door = mlx_load_png("assets/door.png");
-	mlx_resize_texture(g_mlx, g_theme.no, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.ea, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.so, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.we, 64, 64);
-	transpose_texture(g_theme.no);
-	transpose_texture(g_theme.ea);
-	transpose_texture(g_theme.so);
-	transpose_texture(g_theme.we);
-	transpose_texture(g_theme.door);
-
-	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
-	g_map.height = sizeof(world_map) / sizeof(world_map[0]);
-	g_map.buffer = malloc(sizeof(*g_map.buffer) * g_map.width * g_map.height);
-	for (int x = 0; x < g_map.width; x++)
-	{
-		for (int y = 0; y < g_map.height; y++)
-		{
-			double cell_value = world_map[g_map.height - 1 - y][x];
-			g_map.buffer[x * g_map.height + y].tile_type = (int)cell_value;
-			g_map.buffer[x * g_map.height + y].opacity =
-				cell_value - (int)cell_value;
-			if (g_map.buffer[x * g_map.height + y].opacity == 0)
-				g_map.buffer[x * g_map.height + y].opacity = 1;
-		}
-	}
-
-	g_doors.count = 0;
-	for (int i = 0; i < g_map.width * g_map.height; i++)
-	{
-		if (g_map.buffer[i].tile_type == CELL_DOOR)
-			g_doors.count++;
-	}
-	g_doors.locations = malloc(sizeof(t_ivector2) * g_doors.count);
-	g_doors.count = 0;
-	for (int x = 0; x < g_map.width; x++)
-	{
-		for (int y = 0; y < g_map.height; y++)
-		{
-			if (g_map.buffer[x * g_map.height + y].tile_type == CELL_DOOR)
-			{
-				g_doors.locations[g_doors.count] = (t_ivector2){x, y};
-				g_doors.count++;
-			}
-		}
-	}
+	hookservice = hookservice_init(g_mlx);
+	g_hookservice = hookservice;
 
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
 	bind_loop(g_hookservice, movement_bind, &g_camera, 0);
 	bind_loop(g_hookservice, main_loop, &g_camera, 0);
-	bind_loop(g_hookservice, head_bobbing_bind, NULL, 0);
-	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
-	load_minimap();
-	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
 
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);
 }
+

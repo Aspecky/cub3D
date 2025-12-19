@@ -34,7 +34,7 @@ int load_map(t_parse_data *data)
     g_map.width = max_width;
     g_map.height = data->map_line_count;
     
-    g_map.buffer = malloc(sizeof(int) * g_map.width * g_map.height);
+    g_map.buffer = malloc(sizeof(struct s_map_tile) * g_map.width * g_map.height);
     if (!g_map.buffer)
         return (0);
     
@@ -51,12 +51,21 @@ int load_map(t_parse_data *data)
             else
                 c = ' ';
             if (c == '1')
-                g_map.buffer[i * g_map.width + j] = 1;
+            {
+                g_map.buffer[i * g_map.width + j].tile_type = 1;
+                g_map.buffer[i * g_map.width + j].opacity = 1.0;
+            }
             else if (c == '0' || c == 'N' || c == 'S' || 
                      c == 'E' || c == 'W')
-                g_map.buffer[i * g_map.width + j] = 0;
+            {
+                g_map.buffer[i * g_map.width + j].tile_type = 0;
+                g_map.buffer[i * g_map.width + j].opacity = 1.0;
+            }
             else
-                g_map.buffer[i * g_map.width + j] = -1;
+            {
+                g_map.buffer[i * g_map.width + j].tile_type = -1;
+                g_map.buffer[i * g_map.width + j].opacity = 1.0;
+            }
             
             j++;
         }
