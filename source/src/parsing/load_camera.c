@@ -13,6 +13,7 @@
 #include "parsing.h"
 #include <math.h>
 
+struct s_camera g_camera;
 
 void set_camera_direction(char dir)
 {
