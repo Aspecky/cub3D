@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:38:00 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_view_model g_view_model;
-struct s_camera g_camera;
+struct s_player g_player;
 struct s_doors g_doors;
 
 static mlx_t *open_scaled_window(const char *title)
@@ -110,7 +110,7 @@ static void draw_floor_and_ceiling(void)
 	uint32_t floor_color;
 
 	pixels = (uint32_t *)g_img->pixels;
-	ceil_end = g_img->width * (g_img->height / 2 + g_camera.pitch);
+	ceil_end = g_img->width * (g_img->height / 2 + g_player.pitch);
 	total_size = g_img->width * g_img->height;
 
 	ceil_color = ((g_theme.ceiling >> 24) & 0xFF) |
@@ -151,9 +151,9 @@ static void main_loop(void *arg)
 		t_raycast_result rays[10];
 		double distances[10];
 
-		t_vector2 raypos = g_camera.pos;
+		t_vector2 raypos = g_player.pos;
 		t_vector2 raydir =
-			vector2_add(g_camera.dir, vector2_scale(g_camera.plane, camX));
+			vector2_add(g_player.dir, vector2_scale(g_player.cam_plane, camX));
 		t_vector2 unit_raydir = vector2_unit(raydir);
 		double raydis = 100;
 
@@ -190,12 +190,12 @@ static void main_loop(void *arg)
 				(int)(h / total_dist * ((double)img_width / img_height));
 			int lineHeight_half = lineHeight / 2;
 
-			int drawStart = -lineHeight_half + h_half + g_camera.pitch +
-							(int)(g_camera.z / total_dist);
+			int drawStart = -lineHeight_half + h_half + g_player.pitch +
+							(int)(g_player.z / total_dist);
 			if (drawStart < 0)
 				drawStart = 0;
-			int drawEnd = lineHeight_half + h_half + g_camera.pitch +
-						  (int)(g_camera.z / total_dist);
+			int drawEnd = lineHeight_half + h_half + g_player.pitch +
+						  (int)(g_player.z / total_dist);
 			if (drawEnd >= h)
 				drawEnd = h - 1;
 
@@ -219,7 +219,7 @@ static void main_loop(void *arg)
 
 			double step = (double)tex_height / lineHeight;
 			double texPos =
-				(drawStart - g_camera.pitch - (int)(g_camera.z / total_dist) -
+				(drawStart - g_player.pitch - (int)(g_player.z / total_dist) -
 				 h_half + lineHeight_half) *
 				step;
 			uint32_t tex_height_mask = tex_height - 1;
@@ -325,7 +325,7 @@ int main(void)
 
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
-	bind_loop(g_hookservice, main_loop, &g_camera, 0);
+	bind_loop(g_hookservice, main_loop, &g_player, 0);
 	load_minimap();
 	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
 

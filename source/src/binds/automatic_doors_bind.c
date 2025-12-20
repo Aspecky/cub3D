@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 17:34:01 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:38:00 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void automatic_doors_bind(void *param)
 	int i;
 
 	(void)param;
-	pos = g_camera.pos;
+	pos = g_player.pos;
 	i = 0;
 	while (i < g_doors.count)
 	{

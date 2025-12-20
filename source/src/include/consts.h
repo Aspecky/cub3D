@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:13:55 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,15 @@ extern struct s_minimap
 	t_ivector2	center;
 }	g_minimap;
 
-extern struct s_camera
+extern struct s_player
 {
 	t_vector2	pos;
 	t_vector2	dir;
-	t_vector2	plane;
+	t_vector2	cam_plane;
 	int			pitch;
 	int			z;
 	double		walk_speed;
-}	g_camera;
+}	g_player;
 
 extern struct s_map
 {

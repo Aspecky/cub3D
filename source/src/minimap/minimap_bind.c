@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:47:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:27:32 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,11 @@ void minimap_bind(void *param)
 
 	(void)param;
 	tile_start =
-		(t_ivector2){(int)floor(g_camera.pos.x) - g_minimap.tiles_visible / 2,
-					 (int)floor(g_camera.pos.y) - g_minimap.tiles_visible / 2};
+		(t_ivector2){(int)floor(g_player.pos.x) - g_minimap.tiles_visible / 2,
+					 (int)floor(g_player.pos.y) - g_minimap.tiles_visible / 2};
 	offset = (t_ivector2){
-		(int)(g_minimap.tile_size * (g_camera.pos.x - floor(g_camera.pos.x))),
-		(int)(g_minimap.tile_size * (g_camera.pos.y - floor(g_camera.pos.y)))};
+		(int)(g_minimap.tile_size * (g_player.pos.x - floor(g_player.pos.x))),
+		(int)(g_minimap.tile_size * (g_player.pos.y - floor(g_player.pos.y)))};
 	y = 0;
 	while (y < g_minimap.tiles_visible + 1)
 	{

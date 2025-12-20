@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 16:22:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 16:30:41 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ void rotate_bind(void *param)
 	double rot_speed;
 
 	(void)param;
-	plane = &g_camera.plane;
+	plane = &g_player.cam_plane;
 	dt = g_mlx->delta_time;
 	rot_speed = ROTSPEED * dt;
 	if (mlx_is_key_down(g_mlx, MLX_KEY_RIGHT))
 	{
-		g_camera.dir = vector2_rot(g_camera.dir, -rot_speed);
+		g_player.dir = vector2_rot(g_player.dir, -rot_speed);
 		*plane = vector2_rot(*plane, -rot_speed);
 	}
 	if (mlx_is_key_down(g_mlx, MLX_KEY_LEFT))
 	{
-		g_camera.dir = vector2_rot(g_camera.dir, rot_speed);
+		g_player.dir = vector2_rot(g_player.dir, rot_speed);
 		*plane = vector2_rot(*plane, rot_speed);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:20:04 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 16:19:45 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void jump_bind(void *param)
 
 	if (!jumping)
 	{
-		g_camera.walk_speed = WALKSPEED * 0.4;
+		g_player.walk_speed = WALKSPEED * 0.4;
 		dt += g_mlx->delta_time;
 		alpha = fmin(dt / SQUAT_TIME, 1);
-		g_camera.z = (int)(lerp(0, squat_depth, easeOut(alpha)));
+		g_player.z = (int)(lerp(0, squat_depth, easeOut(alpha)));
 		if (alpha == 1)
 		{
 			if (mlx_is_key_down(g_mlx, MLX_KEY_SPACE))
@@ -73,7 +73,7 @@ void jump_bind(void *param)
 			{
 				dt = 0;
 				jumping = true;
-				g_camera.walk_speed = WALKSPEED;
+				g_player.walk_speed = WALKSPEED;
 			}
 		}
 	} else
@@ -84,7 +84,7 @@ void jump_bind(void *param)
 		{
 			dt += g_mlx->delta_time;
 			alpha = fmin(dt / (JUMP_TIME / 2), 1);
-			g_camera.z = (int)lerp(squat_depth, jump_target, easeOut(alpha));
+			g_player.z = (int)lerp(squat_depth, jump_target, easeOut(alpha));
 			if (alpha == 1)
 			{
 				dt = 0;
@@ -94,7 +94,7 @@ void jump_bind(void *param)
 		{
 			dt += g_mlx->delta_time;
 			alpha = fmin(dt / (JUMP_TIME / 2), 1);
-			g_camera.z = (int)lerp(jump_target, 0, easeIn(alpha));
+			g_player.z = (int)lerp(jump_target, 0, easeIn(alpha));
 			if (alpha == 1)
 				animating = false;
 		}

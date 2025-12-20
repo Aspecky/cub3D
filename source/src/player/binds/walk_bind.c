@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 16:33:33 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:17 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,26 @@ void walk_bind(void *param)
 	walk_dir = (t_vector2){0, 0};
 	dt = g_mlx->delta_time;
 	if (mlx_is_key_down(g_mlx, MLX_KEY_W))
-		walk_dir = vector2_add(walk_dir, g_camera.dir);
+		walk_dir = vector2_add(walk_dir, g_player.dir);
 	if (mlx_is_key_down(g_mlx, MLX_KEY_A))
-		walk_dir = vector2_add(walk_dir, vector2_rot(g_camera.dir, M_PI_2));
+		walk_dir = vector2_add(walk_dir, vector2_rot(g_player.dir, M_PI_2));
 	if (mlx_is_key_down(g_mlx, MLX_KEY_S))
-		walk_dir = vector2_add(walk_dir, vector2_scale(g_camera.dir, -1));
+		walk_dir = vector2_add(walk_dir, vector2_scale(g_player.dir, -1));
 	if (mlx_is_key_down(g_mlx, MLX_KEY_D))
-		walk_dir = vector2_add(walk_dir, vector2_rot(g_camera.dir, -M_PI_2));
+		walk_dir = vector2_add(walk_dir, vector2_rot(g_player.dir, -M_PI_2));
 
 	if (walk_dir.x == 0 && walk_dir.y == 0)
 		return;
 	walk_dir = vector2_unit(walk_dir);
 
 	double walkspeed;
-	walkspeed = g_camera.walk_speed * dt;
+	walkspeed = g_player.walk_speed * dt;
 
 	if (COLLISIONS)
 	{
 		t_vector2 pos;
 		double distance;
-		pos = g_camera.pos;
+		pos = g_player.pos;
 
 		distance = fmax(HITBOX_RADIUS, walkspeed);
 		t_raycast_result ray =
@@ -102,15 +102,15 @@ void walk_bind(void *param)
 				pos, vector2_unit(slide_dir), distance, HITBOX_RADIUS);
 
 			if (!slide_ray.hit)
-				g_camera.pos = vector2_add(g_camera.pos,
+				g_player.pos = vector2_add(g_player.pos,
 										   vector2_scale(slide_dir, walkspeed));
 
 		} else
-			g_camera.pos =
-				vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));
+			g_player.pos =
+				vector2_add(g_player.pos, vector2_scale(walk_dir, walkspeed));
 	} else
 	{
-		new_pos = vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));
-		g_camera.pos = new_pos;
+		new_pos = vector2_add(g_player.pos, vector2_scale(walk_dir, walkspeed));
+		g_player.pos = new_pos;
 	}
 }
