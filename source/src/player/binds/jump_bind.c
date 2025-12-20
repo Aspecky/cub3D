@@ -6,11 +6,11 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:20:04 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:25:20 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 16:19:45 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
+#include "player.h"
 #include "consts.h"
 #include <MLX42/MLX42.h>
 #include <math.h>

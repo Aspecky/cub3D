@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.h                                          :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 21:00:33 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:17:14 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/20 16:19:20 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 16:58:03 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIMAP_H
-# define MINIMAP_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
-#include <MLX42/MLX42.h>
+#include "consts.h"
+#include <stdbool.h>
 
-# define MINIMAP_OFFSET 0.01
-# define MINIMAP_CONTENT_SCALE 0.82
-# define MINIMAP_OFFSET_X 0.007
-# define MINIMAP_OFFSET_Y -0.01
+bool init_view_model(void);
+
+void cursor_hook(double xpos, double ypos, void *param);
+void rotate_bind(void *param);
+void walk_bind(void *param);
+void jump_bind(void *param);
+void view_model_bobbing_bind(void *param);
 
 #endif

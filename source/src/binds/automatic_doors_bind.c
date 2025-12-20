@@ -6,11 +6,11 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 17:34:01 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/07 15:57:51 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:38:00 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
+#include "binds.h"
 #include "consts.h"
 #include "types.h"
 #include <stdio.h>

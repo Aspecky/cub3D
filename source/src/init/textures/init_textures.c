@@ -6,16 +6,16 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:26:42 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:31:04 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 15:34:14 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "consts.h"
-#include "loaders.h"
+#include "init.h"
 #include "textures.h"
 #include <mlx_aux/mlx_aux.h>
 
-bool load_textures(void)
+bool init_textures(void)
 {
 	g_theme.no = mlx_load_png("assets/North.png");
 	g_theme.ea = mlx_load_png("assets/East.png");

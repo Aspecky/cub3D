@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loaders.h                                          :+:      :+:    :+:   */
+/*   bindings.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 20:56:27 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:31:57 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/10/11 20:49:20 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 17:28:10 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LOADERS_H
-# define LOADERS_H
+#ifndef BINDINGS_H
+# define BINDINGS_H
 
-#include <stdbool.h>
-#include "mlx_aux/Vector2.h"
+#include <MLX42/MLX42.h>
 
-bool load_player(t_vector2 position, t_vector2 direction);
-bool load_minimap(void);
-bool load_fps_counter(void);
+void	close_window_bind(mlx_key_data_t keydata, void *param);
+void	automatic_doors_bind(void *param);
+void	fps_counter_bind(void *param);
 
 #endif

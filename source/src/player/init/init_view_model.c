@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_view_model.c                                  :+:      :+:    :+:   */
+/*   init_view_model.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/14 18:01:10 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 18:03:45 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/20 16:54:17 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 16:55:21 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
-#include "consts.h"
-#include "loaders.h"
+#include "player.h"
 #include <MLX42/MLX42.h>
 
-bool load_view_model(void)
+bool init_view_model(void)
 {
 	mlx_texture_t *tex = mlx_load_png("assets/view_model.png");
 	mlx_image_t *img = mlx_texture_to_image(g_mlx, tex);
@@ -28,6 +26,5 @@ bool load_view_model(void)
 	g_view_model.inst = img->instances + id;
 	g_view_model.og_pos =
 		(t_ivector2){g_view_model.inst->x, g_view_model.inst->y};
-	bind_loop(g_hookservice, head_bobbing_bind, NULL, 0);
 	return (true);
 }

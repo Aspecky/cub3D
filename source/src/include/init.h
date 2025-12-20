@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loaders.h                                          :+:      :+:    :+:   */
+/*   init.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 20:56:27 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:31:57 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/20 15:26:23 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 15:34:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LOADERS_H
-# define LOADERS_H
+#ifndef INIT_H
+# define INIT_H
 
-#include <stdbool.h>
 #include "mlx_aux/Vector2.h"
 
-bool load_player(t_vector2 position, t_vector2 direction);
-bool load_minimap(void);
-bool load_fps_counter(void);
+bool init_camera(t_vector2 position, t_vector2 direction);
+bool init_minimap(void);
+bool init_textures(void);
 
 #endif

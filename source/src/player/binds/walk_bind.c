@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_bind.c                                    :+:      :+:    :+:   */
+/*   walk_bind.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 19:57:56 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 14:43:14 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 16:33:33 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
+#include "player.h"
 #include "consts.h"
 #include "utils.h"
 #include <MLX42/MLX42.h>
@@ -48,33 +48,13 @@ static t_raycast_result circle_raycast(t_vector2 origin, t_vector2 direction,
 	return (shortest_ray);
 }
 
-static void rotate_player(void)
-{
-	t_vector2 *plane;
-	double dt;
-	double rot_speed;
-
-	plane = &g_camera.plane;
-	dt = g_mlx->delta_time;
-	rot_speed = ROTSPEED * dt;
-	if (mlx_is_key_down(g_mlx, MLX_KEY_RIGHT))
-	{
-		g_camera.dir = vector2_rot(g_camera.dir, -rot_speed);
-		*plane = vector2_rot(*plane, -rot_speed);
-	}
-	if (mlx_is_key_down(g_mlx, MLX_KEY_LEFT))
-	{
-		g_camera.dir = vector2_rot(g_camera.dir, rot_speed);
-		*plane = vector2_rot(*plane, rot_speed);
-	}
-}
-
-static void move_player(void)
+void walk_bind(void *param)
 {
 	t_vector2 walk_dir;
 	t_vector2 new_pos;
 	double dt;
 
+	(void)param;
 	walk_dir = (t_vector2){0, 0};
 	dt = g_mlx->delta_time;
 	if (mlx_is_key_down(g_mlx, MLX_KEY_W))
@@ -133,11 +113,4 @@ static void move_player(void)
 		new_pos = vector2_add(g_camera.pos, vector2_scale(walk_dir, walkspeed));
 		g_camera.pos = new_pos;
 	}
-}
-
-void movement_bind(void *param)
-{
-	(void)param;
-	rotate_player();
-	move_player();
 }

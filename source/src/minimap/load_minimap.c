@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bindings.h                                         :+:      :+:    :+:   */
+/*   load_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/11 20:49:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:25:27 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/20 17:22:42 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 17:26:34 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BINDINGS_H
-# define BINDINGS_H
+#include "consts.h"
+#include "loaders.h"
+#include "minimap.h"
 
-#include <MLX42/MLX42.h>
-
-void	close_window_bind(mlx_key_data_t keydata, void *param);
-void	movement_bind(void *param);
-void	head_bobbing_bind(void *param);
-void	automatic_doors_bind(void *param);
-void	minimap_bind(void *param);
-void	fps_counter_bind(void *param);
-void	cursor_hook(double xpos, double ypos, void *param);
-void	jump_bind(void *param);
-
-#endif
+bool load_minimap(void)
+{
+	if (!init_minimap())
+		return (false);
+	bind_loop(g_hookservice, minimap_bind, NULL, 0);
+	return (true);
+}

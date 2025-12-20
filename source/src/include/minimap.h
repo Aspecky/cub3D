@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loaders.h                                          :+:      :+:    :+:   */
+/*   minimap.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 20:56:27 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:31:57 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/11 21:00:33 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 17:27:41 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LOADERS_H
-# define LOADERS_H
+#ifndef MINIMAP_H
+# define MINIMAP_H
 
-#include <stdbool.h>
-#include "mlx_aux/Vector2.h"
+#include <MLX42/MLX42.h>
 
-bool load_player(t_vector2 position, t_vector2 direction);
-bool load_minimap(void);
-bool load_fps_counter(void);
+# define MINIMAP_OFFSET 0.01
+# define MINIMAP_CONTENT_SCALE 0.82
+# define MINIMAP_OFFSET_X 0.007
+# define MINIMAP_OFFSET_Y -0.01
+
+bool init_minimap(void);
+void minimap_bind(void *param);
 
 #endif

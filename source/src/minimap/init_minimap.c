@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_minimap.c                                     :+:      :+:    :+:   */
+/*   init_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 20:55:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 17:17:38 by mtarrih          ###   ########.fr       */
+/*   Created: 2025/12/20 17:23:51 by mtarrih           #+#    #+#             */
+/*   Updated: 2025/12/20 17:25:52 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
 #include "consts.h"
-#include "loaders.h"
 #include "minimap.h"
 #include <MLX42/MLX42.h>
 
@@ -25,7 +23,7 @@ static void swap_int(int *a, int *b)
 	*b = tmp;
 }
 
-static void init_minimap(void)
+bool init_minimap(void)
 {
 	uint32_t frame_height;
 	uint32_t minimap_height;
@@ -60,11 +58,5 @@ static void init_minimap(void)
 						minimap_offset.y);
 
 	swap_int(&frame_img->instances[0].z, &g_minimap.img->instances[0].z);
-}
-
-bool load_minimap(void)
-{
-	init_minimap();
-	bind_loop(g_hookservice, minimap_bind, NULL, 0);
 	return (true);
 }

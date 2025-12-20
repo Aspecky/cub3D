@@ -6,12 +6,13 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/14 19:03:57 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:38:00 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bindings.h"
+#include "binds.h"
 #include "consts.h"
+#include "init.h"
 #include "loaders.h"
 #include "types.h"
 #include "utils.h"
@@ -65,6 +66,9 @@ double world_map[][5] = {
 	{1, 1, 1, 1, 1}, //
 	{1, 0, 0, 0, 1}, //
 	{1, 0, 0, 0, 1}, //
+	{1, 1, 2, 1, 1}, //
+	{1, 0, 0, 0, 1}, //
+	{1, 0, 0, 0, 1}, //
 	{1, 0, 0, 0, 1}, //
 	{1, 1, 1, 1, 1}, //
 };
@@ -78,6 +82,7 @@ struct s_minimap g_minimap;
 struct s_theme g_theme;
 struct s_map g_map;
 struct s_view_model g_view_model;
+struct s_camera g_camera;
 struct s_doors g_doors;
 
 static mlx_t *open_scaled_window(const char *title)
@@ -314,15 +319,13 @@ int main(void)
 		}
 	}
 
-	load_textures();
-	load_camera((t_vector2){2, 1.5}, (t_vector2){-1, 0});
-	load_view_model();
+	init_textures();
+	load_player((t_vector2){2, 1.5}, (t_vector2){-1, 0});
+	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
-	bind_loop(g_hookservice, movement_bind, &g_camera, 0);
 	bind_loop(g_hookservice, main_loop, &g_camera, 0);
-	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 	load_minimap();
 	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
 
