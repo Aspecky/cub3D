@@ -33,7 +33,7 @@ CFLAGS := -Wall -Wextra -Werror -Ofast
 all: $(NAME)
 
 $(NAME): $(LIBMLX) $(FTLIBC) $(MLX_AUX) $(OBJS) | $(BUILD_DIR)
-	$(CC) $(OBJS) $(CFLAGS) $(LIBMLX) $(MLX_AUX) $(FTLIBC) -o $(NAME) $(LDFLAGS)
+	$(CC) $(OBJS) $(CFLAGS) $(MLX_AUX) $(LIBMLX) $(FTLIBC) -o $(NAME) $(LDFLAGS)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
