@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
-#define PLAYER_H
+# define PLAYER_H
 
-#include "consts.h"
-#include <stdbool.h>
+# include "consts.h"
+# include <stdbool.h>
 
-bool init_view_model(void);
+bool	init_view_model(void);
 
-void cursor_hook(double xpos, double ypos, void *param);
-void rotate_bind(void *param);
-void walk_bind(void *param);
-void jump_bind(void *param);
+void	cursor_hook(double xpos, double ypos, void *param);
+void	rotate_bind(void *param);
+void	walk_bind(void *param);
+void	jump_bind(void *param);
 void	bobbing_bind(void *param);
 
 #endif

@@ -13,11 +13,11 @@
 #ifndef LOADERS_H
 # define LOADERS_H
 
-#include <stdbool.h>
-#include "mlx_aux/Vector2.h"
+# include "mlx_aux/Vector2.h"
+# include <stdbool.h>
 
-bool load_player(t_vector2 position, t_vector2 direction);
-bool load_minimap(void);
-bool load_fps_counter(void);
+bool	load_player(t_vector2 position, t_vector2 direction);
+bool	load_minimap(void);
+bool	load_fps_counter(void);
 
 #endif

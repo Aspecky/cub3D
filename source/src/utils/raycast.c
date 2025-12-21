@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:47:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/10 22:34:37 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/21 22:32:48 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 	ray.hit = false;
 	ray.side = 0;
 
-	ray.stepSize = (t_vector2){1e30, 1e30};
+	ray.step_size = (t_vector2){1e30, 1e30};
 	if (direction.x != 0)
-		ray.stepSize.x = fabs(1 / direction.x);
+		ray.step_size.x = fabs(1 / direction.x);
 	if (direction.y != 0)
-		ray.stepSize.y = fabs(1 / direction.y);
+		ray.step_size.y = fabs(1 / direction.y);
 
 	t_ivector2 mapPos = {(int)(origin.x), (int)(origin.y)};
 	// t_ivector2 mapPos = {(int)floor(origin.x), (int)floor(origin.y)};
@@ -34,36 +34,36 @@ t_raycast_result raycast(t_vector2 origin, t_vector2 direction, double distance)
 	if (direction.x < 0)
 	{
 		step.x = -1;
-		ray.sideDist.x = (origin.x - mapPos.x) * ray.stepSize.x;
+		ray.side_dist.x = (origin.x - mapPos.x) * ray.step_size.x;
 	} else
 	{
 		step.x = 1;
-		ray.sideDist.x = (mapPos.x + 1.0 - origin.x) * ray.stepSize.x;
+		ray.side_dist.x = (mapPos.x + 1.0 - origin.x) * ray.step_size.x;
 	}
 	if (direction.y < 0)
 	{
 		step.y = -1;
-		ray.sideDist.y = (origin.y - mapPos.y) * ray.stepSize.y;
+		ray.side_dist.y = (origin.y - mapPos.y) * ray.step_size.y;
 	} else
 	{
 		step.y = 1;
-		ray.sideDist.y = (mapPos.y + 1.0 - origin.y) * ray.stepSize.y;
+		ray.side_dist.y = (mapPos.y + 1.0 - origin.y) * ray.step_size.y;
 	}
 
 	ray.distance = 0.0;
 	while (!ray.hit)
 	{
-		if (ray.sideDist.x < ray.sideDist.y)
+		if (ray.side_dist.x < ray.side_dist.y)
 		{
 			mapPos.x += step.x;
-			ray.distance = ray.sideDist.x;
-			ray.sideDist.x += ray.stepSize.x;
+			ray.distance = ray.side_dist.x;
+			ray.side_dist.x += ray.step_size.x;
 			ray.side = 0;
 		} else
 		{
 			mapPos.y += step.y;
-			ray.distance = ray.sideDist.y;
-			ray.sideDist.y += ray.stepSize.y;
+			ray.distance = ray.side_dist.y;
+			ray.side_dist.y += ray.step_size.y;
 			ray.side = 1;
 		}
 		if (ray.distance >= distance)
