@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/21 19:09:28 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define MAX_PITCH_HSCALE 0.4 // ±(Sreen_Height * MAX_PITCH_HSCALE)
 
 # define VIEW_MODEL_SCALE 0.7
-# define VIEW_MODEL_DEPTH 100 // pixels
+# define VIEW_MODEL_DEPTH 20 // pixels
 
 # define MINIMAP_SCALE 0.3
 # define MINIMAP_CELL_SCALE 0.1

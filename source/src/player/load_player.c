@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:59:59 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/21 19:03:41 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool load_player(t_vector2 position, t_vector2 direction)
 	mlx_cursor_hook(g_mlx, cursor_hook, 0);
 	bind_loop(g_hookservice, rotate_bind, 0, 0);
 	bind_loop(g_hookservice, walk_bind, 0, 0);
+	bind_loop(g_hookservice, bobbing_bind, 0, 0);
 	bind_loop(g_hookservice, jump_bind, 0, 0);
-	bind_loop(g_hookservice, view_model_bobbing_bind, 0, 0);
 	return (true);
 }

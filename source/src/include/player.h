@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 16:19:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 16:58:03 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/21 19:03:41 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ void cursor_hook(double xpos, double ypos, void *param);
 void rotate_bind(void *param);
 void walk_bind(void *param);
 void jump_bind(void *param);
-void view_model_bobbing_bind(void *param);
+void	bobbing_bind(void *param);
 
 #endif
