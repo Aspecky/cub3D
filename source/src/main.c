@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:59:14 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/20 17:41:52 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #include <mlx_aux/mlx_aux.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "parsing.h"
 
 // int world_map[][23] = {
 // 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -277,19 +276,8 @@ static void main_loop(void *arg)
 	}
 }
 
-
-int main(int argc, char **argv)
+int main(void)
 {
-	t_hookservice *hookservice;
-	if (argc != 2)
-	{
-		ft_dprintf(2, "Usage: %s <map.cub>\n", argv[0]);
-		return (1);
-	}
-	
-	if (!parse_file(argv[1]))
-		return (1);
-	
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
@@ -344,4 +332,3 @@ int main(int argc, char **argv)
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);
 }
-
