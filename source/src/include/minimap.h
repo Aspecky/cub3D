@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 21:00:33 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:27:41 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/23 19:08:32 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@
 
 bool	init_minimap(void);
 void	minimap_bind(void *param);
+void	draw_player_marker(void);
+void	draw_tile(int px_x, int px_y, uint32_t tile_size, uint32_t color);
 
 #endif

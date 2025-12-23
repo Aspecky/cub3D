@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/21 22:36:45 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/23 18:49:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ extern struct s_minimap
 	int			tile_size;
 	int			tiles_visible;
 	int			radius;
+	int			radius_sq;
 	t_ivector2	center;
 }	g_minimap;
 

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 17:22:42 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/20 17:26:34 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/23 19:23:31 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "loaders.h"
 #include "minimap.h"
 
-bool load_minimap(void)
+bool	load_minimap(void)
 {
 	if (!init_minimap())
 		return (false);
