@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/21 22:13:20 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/23 17:00:23 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "consts.h"
 #include "init.h"
 #include "loaders.h"
+#include "raycast.h"
 #include "types.h"
 #include "utils.h"
 #include <MLX42/MLX42.h>
