@@ -14,12 +14,12 @@
 #include "loaders.h"
 #include "player.h"
 
-bool load_player(t_vector2 position, t_vector2 direction)
+bool	load_player(t_vector2 position, t_vector2 direction)
 {
 	if (!init_view_model())
 		return (false);
-	g_player.cam_plane =
-		(t_vector2){direction.y * PLANE_SCALE, -direction.x * PLANE_SCALE};
+	g_player.cam_plane = (t_vector2){direction.y * PLANE_SCALE, -direction.x
+		* PLANE_SCALE};
 	g_player.pos = position;
 	g_player.dir = direction;
 	g_player.pitch = 0;

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 16:57:30 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/23 16:59:18 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/23 20:09:16 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "mlx_aux/Vector2.h"
 # include "types.h"
+# include <stdbool.h>
 
 typedef struct s_dda_init
 {
@@ -38,5 +39,7 @@ typedef struct s_raycast_result
 
 t_raycast_result	raycast(t_vector2 origin, t_vector2 direction,
 		double distance);
+t_raycast_result	circle_raycast(t_vector2 origin, t_vector2 direction,
+		double distance, double radius);
 
 #endif

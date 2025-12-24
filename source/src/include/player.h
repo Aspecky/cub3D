@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 16:19:20 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/21 19:03:41 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/24 21:08:08 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 
 # include "consts.h"
 # include <stdbool.h>
+
+typedef struct s_jump_state
+{
+	bool	animating;
+	bool	jumping;
+	bool	falling;
+	double	dt;
+	double	hold_time;
+	double	jump_boost;
+}			t_jump_state;
 
 bool	init_view_model(void);
 

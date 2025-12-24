@@ -14,11 +14,11 @@
 #include "mlx_aux/Vector2.h"
 #include "player.h"
 
-void rotate_bind(void *param)
+void	rotate_bind(void *param)
 {
-	t_vector2 *plane;
-	double dt;
-	double rot_speed;
+	t_vector2	*plane;
+	double		dt;
+	double		rot_speed;
 
 	(void)param;
 	plane = &g_player.cam_plane;

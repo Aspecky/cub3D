@@ -10,17 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "player.h"
 #include "consts.h"
+#include "player.h"
 #include <MLX42/MLX42.h>
 
-void cursor_hook(double xpos, double ypos, void *param)
+void	cursor_hook(double xpos, double ypos, void *param)
 {
-	static t_vector2 old_pos = {0, 0};
-	t_vector2 delta;
-	double rads;
-	double pitch_speed;
-	int max_pitch;
+	static t_vector2	old_pos = {0, 0};
+	t_vector2			delta;
+	double				rads;
+	double				pitch_speed;
+	int					max_pitch;
 
 	(void)param;
 	delta.x = -(xpos - old_pos.x);
@@ -29,7 +29,8 @@ void cursor_hook(double xpos, double ypos, void *param)
 	g_player.dir = vector2_rot(g_player.dir, rads);
 	g_player.cam_plane = vector2_rot(g_player.cam_plane, rads);
 	pitch_speed = g_mlx->height / (2.0 * PLANE_SCALE);
-	g_player.pitch += (int)(delta.y * CURSOR_SPEED * pitch_speed * g_mlx->delta_time);
+	g_player.pitch += (int)(delta.y * CURSOR_SPEED * pitch_speed
+			* g_mlx->delta_time);
 	max_pitch = (int)(g_mlx->height * MAX_PITCH_HSCALE);
 	if (g_player.pitch > max_pitch)
 		g_player.pitch = max_pitch;
