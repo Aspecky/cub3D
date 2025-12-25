@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 21:33:37 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 15:54:36 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/25 16:16:40 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,34 +99,28 @@ static void	draw_blended_wall(t_wall_render_params params, uint32_t x,
 
 void	render_loop(void *arg)
 {
-	uint32_t				x;
-	t_raycast_result		rays[10];
-	double					distances[10];
-	t_vector2				raydir;
-	size_t					rays_count;
-	t_raycast_result		ray;
-	size_t					i;
-	t_wall_render_params	params;
+	t_render_loop_vars	vars;
 
 	(void)arg;
 	draw_floor_and_ceiling();
-	x = 0;
-	while (x < g_img->width)
+	vars.x = 0;
+	while (vars.x < g_img->width)
 	{
-		raydir = vector2_add(g_player.dir, vector2_scale(g_player.cam_plane, 2.0
-					* x / g_img->width - 1));
-		rays_count = collect_rays(raydir, rays, distances);
-		i = rays_count;
-		while (i-- > 0)
+		vars.raydir = vector2_add(g_player.dir,
+				vector2_scale(g_player.cam_plane, 2.0 * vars.x / g_img->width
+					- 1));
+		vars.rays_count = collect_rays(vars.raydir, vars.rays, vars.distances);
+		vars.i = vars.rays_count;
+		while (vars.i-- > 0)
 		{
-			ray = rays[i];
-			params = calc_wall_render_params(ray, raydir, distances[i],
-					(int)g_img->height);
-			if (rays_count == 1)
-				draw_opaque_wall(params, x);
+			vars.ray = vars.rays[vars.i];
+			vars.params = calc_wall_render_params(vars.ray, vars.raydir,
+					vars.distances[vars.i], (int)g_img->height);
+			if (vars.rays_count == 1)
+				draw_opaque_wall(vars.params, vars.x);
 			else
-				draw_blended_wall(params, x, ray.tile_opacity);
+				draw_blended_wall(vars.params, vars.x, vars.ray.tile_opacity);
 		}
-		x++;
+		vars.x++;
 	}
 }

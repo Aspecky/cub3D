@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:39:57 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 15:49:46 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/25 16:16:10 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <mlx_aux/Vector2.h>
 
 # define MONITOR_SCALE 0.75
-# define PLANE_SCALE 0.99 // 0.5 = 90° FOV, smaller = wider walls
+# define PLANE_SCALE 0.66 // 0.5 = 90° FOV, smaller = wider walls
 # define RENDER_DISTANCE 100
 
 # define WALKSPEED 3      // squares / second
