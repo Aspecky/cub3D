@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 21:33:37 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 15:51:22 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/25 15:54:36 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	draw_opaque_wall(t_wall_render_params params, uint32_t x)
 
 	common.img_ptr = g_img->pixels + (params.draw_start * g_img->width + x) * 4;
 	common.img_stride = g_img->width * 4;
-	common.tex_col = params.tex->pixels + params.tex_x * params.tex->height * 4;
+	common.tex_col = params.tex_pixels + params.tex_x * params.tex_height * 4;
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{
@@ -78,7 +78,7 @@ static void	draw_blended_wall(t_wall_render_params params, uint32_t x,
 	inv_alpha = 255 - new_alpha;
 	common.img_ptr = g_img->pixels + (params.draw_start * g_img->width + x) * 4;
 	common.img_stride = g_img->width * 4;
-	common.tex_col = params.tex->pixels + params.tex_x * params.tex->height * 4;
+	common.tex_col = params.tex_pixels + params.tex_x * params.tex_height * 4;
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{

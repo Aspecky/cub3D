@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/24 21:50:09 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/25 15:56:03 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int main(void)
 	}
 
 	init_textures();
-	load_player((t_vector2){2, 1.5}, (t_vector2){0, 1});
+	load_player((t_vector2){2, 1.5}, (t_vector2){0, -1});
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 
 	bind_key(g_hookservice, close_window_bind, NULL,

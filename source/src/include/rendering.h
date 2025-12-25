@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 21:33:52 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 15:41:23 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/25 15:55:29 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ typedef struct s_wall_render_params
 {
 	int			draw_start;
 	int			draw_end;
-	mlx_texture_t	*tex;
+	uint32_t	tex_height;
+	uint8_t		*tex_pixels;
 	uint32_t	tex_x;
 	double		step;
 	double		tex_pos;
