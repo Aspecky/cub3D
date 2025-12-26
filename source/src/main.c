@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 15:56:03 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/26 20:57:06 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "init.h"
 #include "loaders.h"
 #include "types.h"
+#include "parsing.h"
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
 #include <mlx_aux/Color4.h>
@@ -22,6 +23,8 @@
 #include <mlx_aux/mlx_aux.h>
 #include <stdlib.h>
 #include "rendering.h"
+#include <fcntl.h>
+#include <unistd.h>
 
 double world_map[][5] = {
 	{1, 1, 1, 1, 1}, //
@@ -63,6 +66,10 @@ static mlx_t *open_scaled_window(const char *title)
 
 int main(void)
 {
+
+	// parse_file();
+	return 0;
+
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
@@ -116,4 +123,5 @@ int main(void)
 
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);
+	return (0);
 }
