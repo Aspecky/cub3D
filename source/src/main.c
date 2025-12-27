@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/26 22:05:07 by kamar            ###   ########.fr       */
+/*   Updated: 2025/12/27 18:36:13 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,16 @@ static mlx_t *open_scaled_window(const char *title)
 	return (mlx);
 }
 
-int main(void)
+int main(int ac, char *av[])
 {
+	if (ac == 1)
+	{
+		dputstr("Usage: ./cub3D *.cub", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
 
-	// parse_file();
-	// return 0;
+
+	return 0;
 
 	g_mlx = open_scaled_window("cub3d");
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
