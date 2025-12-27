@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 17:34:13 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/27 17:53:17 by kamar            ###   ########.fr       */
+/*   Updated: 2025/12/27 18:48:06 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef PARSING_H
+# define PARSING_H
 
 # include "mlx_aux/Color4.h"
 # include "mlx_aux/Vector2.h"
@@ -48,3 +51,5 @@ int parse_color(char *color_str, t_color_rgb *color);
 int parse_line(char *line, t_parsing *data);
 int parse_map(int fd, t_lninfo *lninfo, t_parsing *data);
 int parse_content(int fd, t_parsing *data);
+
+#endif
