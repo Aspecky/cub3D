@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 18:02:46 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/26 16:59:59 by kamar            ###   ########.fr       */
+/*   Updated: 2025/12/27 17:53:08 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,90 @@ static int validate_map_line(char *line)
     return (1);
 }
 
+static int is_valid_pos(t_parsing *data, int x, int y)
+{
+    if (y < 0 || y >= data->map_height)
+        return (0);
+    if (x < 0 || x >= (int)ft_strlen(data->map[y]))
+        return (0);
+    return (1);
+}
+
+static int flood_fill(t_parsing *data, char **visited, int x, int y)
+{
+    if (!is_valid_pos(data, x, y))
+        return (0);
+    
+    if (x >= (int)ft_strlen(data->map[y]))
+        return (0);
+    
+    if (data->map[y][x] == ' ')
+        return (0);
+    
+    if (data->map[y][x] == '1')
+        return (1);
+    
+    if (visited[y][x])
+        return (1);
+    
+    visited[y][x] = 1;
+    
+    if (!flood_fill(data, visited, x + 1, y))
+        return (0);
+    if (!flood_fill(data, visited, x - 1, y))
+        return (0);
+    if (!flood_fill(data, visited, x, y + 1))
+        return (0);
+    if (!flood_fill(data, visited, x, y - 1))
+        return (0);
+    
+    return (1);
+}
+
+static int validate_map_closed(t_parsing *data)
+{
+    char **visited;
+    int i;
+    int result;
+
+    visited = malloc(sizeof(char *) * data->map_height);
+    if (!visited)
+        return (0);
+    
+    i = 0;
+    while (i < data->map_height)
+    {
+        visited[i] = malloc(data->map_width + 1);
+        if (!visited[i])
+        {
+            while (--i >= 0)
+                free(visited[i]);
+            free(visited);
+            return (0);
+        }
+        ft_memset(visited[i], 0, data->map_width + 1);
+        i++;
+    }
+    
+    result = flood_fill(data, visited, data->player_pos.x, data->player_pos.y);
+    
+    i = 0;
+    while (i < data->map_height)
+    {
+        free(visited[i]);
+        i++;
+    }
+    free(visited);
+    
+    if (!result)
+    {
+        dputstr("Error: map is not closed\n", 2);
+        return (0);
+    }
+    
+    return (1);
+}
+
 int parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 {
     ssize_t ret;
@@ -313,6 +397,9 @@ int parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
     if (!find_player(data))
         return (0);
 
+    if (!validate_map_closed(data))
+        return (0);
+
     return (1);
 }
 int parse_content(int fd, t_parsing *data)
@@ -361,31 +448,35 @@ int parse_content(int fd, t_parsing *data)
     free(lninfo.store);
     return (1);
 }
-int     parse_file(char *file)
+
+t_parsing    parse_file(char *file)
 {
     t_parsing data;
     int fd;
 
+    data.ok = false;
     if (!valid_cub(file))
     {
         dputstr("Error, invalid file extension\n, must be .cub\n", 2);
-        return (0);
+        return (data);
     }
 
     fd = open(file, O_RDONLY);
     if (fd < 0)
     {
         printf("Error, cannot open file %s\n", file);
-        return (0);
+        return (data);
     }
     init_parse(&data);
     if(!parse_content(fd, &data))
     {
         close(fd);
         free_parse(&data);
-        return (0);
+        return (data);
     }
     close(fd);
-    return (1);
+    data.ok = true;
+    
+    return (data);
 }
 
