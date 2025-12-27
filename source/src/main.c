@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/27 18:36:13 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/27 19:51:01 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,21 @@ static mlx_t *open_scaled_window(const char *title)
 
 int main(int ac, char *av[])
 {
+	t_parsing parse;
+
 	if (ac == 1)
 	{
 		dputstr("Usage: ./cub3D *.cub", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 
-
-	return 0;
-
+	parse = parse_file(av[1]);
+	if (!parse.ok)
+		return (EXIT_FAILURE);
 	g_mlx = open_scaled_window("cub3d");
+	if (!init_textures(parse))
+		return (EXIT_FAILURE);
+
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 	g_hookservice = hookservice_init(g_mlx);
@@ -116,7 +121,6 @@ int main(int ac, char *av[])
 		}
 	}
 
-	init_textures();
 	load_player((t_vector2){2, 1.5}, (t_vector2){0, -1});
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 
