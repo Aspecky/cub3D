@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 17:34:13 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/27 18:48:06 by mtarrih          ###   ########.fr       */
+/*   Updated: 2025/12/29 13:02:31 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include "mlx_aux/Vector2.h"
 # include "ftlibc/ft_stdio.h"
 #include <stdbool.h>
+#include "ftlibc/ft_stdio.h"
+#include "ftlibc/ft_string.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "ftlibc/ft_stdlib.h"
+
 
 /*
    111111
@@ -43,13 +50,17 @@ typedef struct s_parsing
 
 void init_parse(t_parsing *data);
 void free_parse(t_parsing *data);
-t_parsing parse_file(char *file);
 int valid_cub(char *file);
 int is_empty_line(char *line);
 int parse_texture(char *path_str, char **dest);
 int parse_color(char *color_str, t_color_rgb *color);
+int validate_map_line(char *line);
+int find_player(t_parsing *data);
+int validate_map_closed(t_parsing *data);
+int validate_doors(t_parsing *data);
 int parse_line(char *line, t_parsing *data);
 int parse_map(int fd, t_lninfo *lninfo, t_parsing *data);
 int parse_content(int fd, t_parsing *data);
+t_parsing parse_file(char *file);
 
 #endif
