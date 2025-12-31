@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 12:54:56 by kamar            ###   ########.fr       */
+/*   Updated: 2025/12/29 18:07:24 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 {
 	ssize_t	ret;
 	int		len;
+	int		capacity;
+	int		i;
+	int		j;
+	int		has_player;
 
 	ret = dgetline(fd, lninfo);
 	while (ret > 0 && is_empty_line(lninfo->line))
@@ -51,15 +55,42 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 		return (0);
 	}
 	data->map_height = 0;
-	data->map = malloc(sizeof(char *) * 1000);
+	capacity = 100;
+	data->map = malloc(sizeof(char *) * capacity);
 	if (!data->map)
 		return (0);
 	while (ret > 0)
 	{
 		if (is_empty_line(lninfo->line))
-			break ;
+		{
+			has_player = 0;
+			i = -1;
+			while (++i < data->map_height)
+			{
+				j = -1;
+				while (data->map[i][++j])
+					if (data->map[i][j] == 'N' || data->map[i][j] == 'S'
+						|| data->map[i][j] == 'E' || data->map[i][j] == 'W')
+						has_player = 1;
+			}
+			if (!has_player)
+			{
+				while (data->map_height > 0)
+					free(data->map[--data->map_height]);
+				data->map_width = 0;
+			}
+			ret = dgetline(fd, lninfo);
+			continue ;
+		}
 		if (!validate_map_line(lninfo->line))
 			return (0);
+		if (data->map_height >= capacity)
+		{
+			capacity *= 2;
+			data->map = realloc(data->map, sizeof(char *) * capacity);
+			if (!data->map)
+				return (0);
+		}
 		len = ft_strlen(lninfo->line);
 		if (len > 0 && lninfo->line[len - 1] == '\n')
 			len--;
