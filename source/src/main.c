@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/03 19:27:13 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/03 19:30:56 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,6 @@ int main(int ac, char *av[])
 	parse = parse_file(av[1]);
 	if (!parse.ok)
 		return (EXIT_FAILURE);
-
-	for (int i = 0; i < parse.map_height; i++) {
-		printf("%s\n", parse.map[i]);
-	}
 	
 	g_mlx = open_scaled_window("cub3d");
 	if (!init_textures(parse) || !init_map(parse))
