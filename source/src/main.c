@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/27 19:51:01 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/03 19:27:13 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,17 @@
 #include "consts.h"
 #include "init.h"
 #include "loaders.h"
-#include "types.h"
 #include "parsing.h"
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
 #include <mlx_aux/Color4.h>
 #include <mlx_aux/HookService.h>
 #include <mlx_aux/mlx_aux.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "rendering.h"
 #include <fcntl.h>
 #include <unistd.h>
-
-double world_map[][5] = {
-	{1, 1, 1, 1, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 1, 2, 1, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 0, 0, 0, 1}, //
-	{1, 1, 1, 1, 1}, //
-};
-int rows = sizeof(world_map) / sizeof(world_map[0]);
-int cols = sizeof(world_map[0]) / sizeof(world_map[0][0]);
 
 mlx_t *g_mlx;
 mlx_image_t *g_img;
@@ -64,6 +51,19 @@ static mlx_t *open_scaled_window(const char *title)
 	return (mlx);
 }
 
+static t_vector2 get_player_direction(char dir)
+{
+	if (dir == 'N')
+		return ((t_vector2){0, 1});
+	else if (dir == 'S')
+		return ((t_vector2){0, -1});
+	else if (dir == 'E')
+		return ((t_vector2){1, 0});
+	else if (dir == 'W')
+		return ((t_vector2){-1, 0});
+	return ((t_vector2){0, -1});
+}
+
 int main(int ac, char *av[])
 {
 	t_parsing parse;
@@ -77,51 +77,22 @@ int main(int ac, char *av[])
 	parse = parse_file(av[1]);
 	if (!parse.ok)
 		return (EXIT_FAILURE);
-	g_mlx = open_scaled_window("cub3d");
-	if (!init_textures(parse))
-		return (EXIT_FAILURE);
 
+	for (int i = 0; i < parse.map_height; i++) {
+		printf("%s\n", parse.map[i]);
+	}
+	
+	g_mlx = open_scaled_window("cub3d");
+	if (!init_textures(parse) || !init_map(parse))
+		return (EXIT_FAILURE);
+	
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 	g_hookservice = hookservice_init(g_mlx);
 
-	g_map.width = sizeof(world_map[0]) / sizeof(world_map[0][0]);
-	g_map.height = sizeof(world_map) / sizeof(world_map[0]);
-	g_map.buffer = malloc(sizeof(*g_map.buffer) * g_map.width * g_map.height);
-	for (int x = 0; x < g_map.width; x++)
-	{
-		for (int y = 0; y < g_map.height; y++)
-		{
-			double cell_value = world_map[g_map.height - 1 - y][x];
-			g_map.buffer[x * g_map.height + y].tile_type = (int)cell_value;
-			g_map.buffer[x * g_map.height + y].opacity =
-				cell_value - (int)cell_value;
-			if (g_map.buffer[x * g_map.height + y].opacity == 0)
-				g_map.buffer[x * g_map.height + y].opacity = 1;
-		}
-	}
-
-	g_doors.count = 0;
-	for (int i = 0; i < g_map.width * g_map.height; i++)
-	{
-		if (g_map.buffer[i].tile_type == CELL_DOOR)
-			g_doors.count++;
-	}
-	g_doors.locations = malloc(sizeof(t_ivector2) * g_doors.count);
-	g_doors.count = 0;
-	for (int x = 0; x < g_map.width; x++)
-	{
-		for (int y = 0; y < g_map.height; y++)
-		{
-			if (g_map.buffer[x * g_map.height + y].tile_type == CELL_DOOR)
-			{
-				g_doors.locations[g_doors.count] = (t_ivector2){x, y};
-				g_doors.count++;
-			}
-		}
-	}
-
-	load_player((t_vector2){2, 1.5}, (t_vector2){0, -1});
+	load_player((t_vector2){parse.player_pos.x + 0.5, 
+				(parse.map_height - 1 - parse.player_pos.y) + 0.5}, 
+				get_player_direction(parse.player_dir));
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 
 	bind_key(g_hookservice, close_window_bind, NULL,
