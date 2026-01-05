@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 18:07:24 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/05 11:44:36 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 		if (data->map_height >= capacity)
 		{
 			capacity *= 2;
-			data->map = realloc(data->map, sizeof(char *) * capacity);
+			data->map = ft_realloc(data->map, sizeof(char *) * (capacity / 2), sizeof(char *) * capacity);
 			if (!data->map)
 				return (0);
 		}

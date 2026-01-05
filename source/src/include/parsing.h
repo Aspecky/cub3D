@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 17:34:13 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 13:02:31 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/05 11:44:36 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_parsing
     bool ok;
 } t_parsing;
 
+void *ft_realloc(void *ptr, size_t old_size, size_t new_size);
 void init_parse(t_parsing *data);
 void free_parse(t_parsing *data);
 int valid_cub(char *file);
