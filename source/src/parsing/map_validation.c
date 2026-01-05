@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 17:57:02 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/05 17:44:55 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,75 +68,7 @@ int	find_player(t_parsing *data)
 	return (1);
 }
 
-static int	is_valid_pos(t_parsing *data, int x, int y)
-{
-	if (y < 0 || y >= data->map_height)
-		return (0);
-	if (x < 0 || x >= (int)ft_strlen(data->map[y]))
-		return (0);
-	return (1);
-}
 
-static int	flood_fill(t_parsing *data, char **visited, int x, int y)
-{
-	if (!is_valid_pos(data, x, y))
-		return (0);
-	if (data->map[y][x] == ' ')
-		return (0);
-	if (data->map[y][x] == '1')
-		return (1);
-	if (visited[y][x])
-		return (1);
-	visited[y][x] = 1;
-	if (!flood_fill(data, visited, x + 1, y))
-		return (0);
-	if (!flood_fill(data, visited, x - 1, y))
-		return (0);
-	if (!flood_fill(data, visited, x, y + 1))
-		return (0);
-	if (!flood_fill(data, visited, x, y - 1))
-		return (0);
-	return (1);
-}
-
-int	validate_map_closed(t_parsing *data)
-{
-	char	**visited;
-	int		i;
-	int		result;
-
-	visited = malloc(sizeof(char *) * data->map_height);
-	if (!visited)
-		return (0);
-	i = 0;
-	while (i < data->map_height)
-	{
-		visited[i] = malloc(data->map_width + 1);
-		if (!visited[i])
-		{
-			while (--i >= 0)
-				free(visited[i]);
-			free(visited);
-			return (0);
-		}
-		ft_memset(visited[i], 0, data->map_width + 1);
-		i++;
-	}
-	result = flood_fill(data, visited, data->player_pos.x, data->player_pos.y);
-	i = 0;
-	while (i < data->map_height)
-	{
-		free(visited[i]);
-		i++;
-	}
-	free(visited);
-	if (!result)
-	{
-		dputstr("Error: map is not closed\n", 2);
-		return (0);
-	}
-	return (1);
-}
 
 static char	get_cell(t_parsing *data, int x, int y)
 {
@@ -146,6 +78,88 @@ static char	get_cell(t_parsing *data, int x, int y)
 		return (' ');
 	return (data->map[y][x]);
 }
+
+static int	find_first_non_space(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	return (i);
+}
+
+static int	find_last_non_space(char *line)
+{
+	int	i;
+
+	i = ft_strlen(line) - 1;
+	while (i >= 0 && line[i] == ' ')
+		i--;
+	return (i);
+}
+
+int	check_map_borders(t_parsing *data)
+{
+	int	i;
+	int	j;
+	int	first_char;
+	int	last_char;
+
+	i = 0;
+	while (i < data->map_height)
+	{
+		first_char = find_first_non_space(data->map[i]);
+		last_char = find_last_non_space(data->map[i]);
+		if (i == 0 || i == data->map_height - 1)
+		{
+			j = first_char;
+			while (j <= last_char)
+			{
+				if (data->map[i][j] != '1' && data->map[i][j] != ' ')
+				{
+					dputstr("Error: map must be surrounded by walls\n", 2);
+					return (0);
+				}
+				j++;
+			}
+		}
+		else
+		{
+			if (first_char >= 0 && data->map[i][first_char] != '1')
+			{
+				dputstr("Error: map must be surrounded by walls\n", 2);
+				return (0);
+			}
+			if (last_char >= 0 && data->map[i][last_char] != '1')
+			{
+				dputstr("Error: map must be surrounded by walls\n", 2);
+				return (0);
+			}
+		}
+		j = 0;
+		while (j < (int)ft_strlen(data->map[i]))
+		{
+			if (i > 0 && data->map[i][j] != '1' && data->map[i][j] != ' ')
+			{
+				if (get_cell(data, j, i - 1) == ' ')
+				{
+					dputstr("Error: map must be surrounded by walls\n", 2);
+					return (0);
+				}
+				if (j > 0 && get_cell(data, j - 1, i - 1) == ' ')
+				{
+					dputstr("Error: map must be surrounded by walls\n", 2);
+					return (0);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
 
 static int	is_wall(char c)
 {

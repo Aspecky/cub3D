@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 17:34:13 by kamar             #+#    #+#             */
-/*   Updated: 2026/01/05 11:44:36 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/05 16:49:25 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int parse_texture(char *path_str, char **dest);
 int parse_color(char *color_str, t_color_rgb *color);
 int validate_map_line(char *line);
 int find_player(t_parsing *data);
-int validate_map_closed(t_parsing *data);
+int check_map_borders(t_parsing *data);
 int validate_doors(t_parsing *data);
 int parse_line(char *line, t_parsing *data);
 int parse_map(int fd, t_lninfo *lninfo, t_parsing *data);
