@@ -6,7 +6,7 @@
 /*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 18:07:24 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/05 16:49:29 by kamar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 	ssize_t	ret;
 	int		len;
 	int		capacity;
-	int		i;
-	int		j;
-	int		has_player;
 
 	ret = dgetline(fd, lninfo);
 	while (ret > 0 && is_empty_line(lninfo->line))
@@ -63,31 +60,16 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 	{
 		if (is_empty_line(lninfo->line))
 		{
-			has_player = 0;
-			i = -1;
-			while (++i < data->map_height)
-			{
-				j = -1;
-				while (data->map[i][++j])
-					if (data->map[i][j] == 'N' || data->map[i][j] == 'S'
-						|| data->map[i][j] == 'E' || data->map[i][j] == 'W')
-						has_player = 1;
-			}
-			if (!has_player)
-			{
-				while (data->map_height > 0)
-					free(data->map[--data->map_height]);
-				data->map_width = 0;
-			}
-			ret = dgetline(fd, lninfo);
-			continue ;
+			dputstr("Error: empty line in map\n", 2);
+			return (0);
 		}
 		if (!validate_map_line(lninfo->line))
 			return (0);
 		if (data->map_height >= capacity)
 		{
 			capacity *= 2;
-			data->map = realloc(data->map, sizeof(char *) * capacity);
+			data->map = ft_realloc(data->map, sizeof(char *) * (capacity / 2),
+					sizeof(char *) * capacity);
 			if (!data->map)
 				return (0);
 		}
@@ -111,7 +93,7 @@ int	parse_map(int fd, t_lninfo *lninfo, t_parsing *data)
 	}
 	if (!find_player(data))
 		return (0);
-	if (!validate_map_closed(data))
+	if (!check_map_borders(data))
 		return (0);
 	if (!validate_doors(data))
 		return (0);
