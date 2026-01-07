@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 17:34:13 by kamar             #+#    #+#             */
-/*   Updated: 2026/01/05 16:49:25 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/06 18:18:44 by kaneddam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "ftlibc/ft_stdlib.h"
+#include "ftlibc/ft_ctype.h"
 
 
 /*
@@ -57,11 +58,25 @@ int parse_texture(char *path_str, char **dest);
 int parse_color(char *color_str, t_color_rgb *color);
 int validate_map_line(char *line);
 int find_player(t_parsing *data);
+int	is_void(char c);
+int	is_wall(char c);
+int	is_map_char(char c);
+char	get_cell(t_parsing *data, int x, int y);
 int check_map_borders(t_parsing *data);
 int validate_doors(t_parsing *data);
+int	validate_single_door(t_parsing *data, int x, int y);
+int	validate_door_vertical(t_parsing *data, int x, int y);
+int	validate_door_horizontal(t_parsing *data, int x, int y);
 int parse_line(char *line, t_parsing *data);
 int parse_map(int fd, t_lninfo *lninfo, t_parsing *data);
 int parse_content(int fd, t_parsing *data);
 t_parsing parse_file(char *file);
+
+int	check_side_borders(t_parsing *data, int i, int first, int last);
+int	check_top_bottom_borders(t_parsing *data, int i, int first, int last);
+
+int	find_last_non_space(char *line);
+int	find_first_non_space(char *line);
+int	check_space_leaks(t_parsing *data, int i, int j);
 
 #endif
