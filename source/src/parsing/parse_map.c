@@ -6,7 +6,7 @@
 /*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 17:15:00 by kaneddam          #+#    #+#             */
-/*   Updated: 2026/01/06 19:02:49 by kaneddam         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:28:53 by kaneddam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	read_map_lines(int fd, t_lninfo *lninfo, t_parsing *data)
 	data->map = malloc(sizeof(char *) * capacity);
 	if (!data->map)
 		return (0);
-	ret = dgetline(fd, lninfo);
+	ret = 1;
 	while (ret > 0)
 	{
 		if (is_empty_line(lninfo->line))
