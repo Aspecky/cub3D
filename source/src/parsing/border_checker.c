@@ -6,7 +6,7 @@
 /*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 17:00:00 by kaneddam          #+#    #+#             */
-/*   Updated: 2026/01/06 16:43:58 by kaneddam         ###   ########.fr       */
+/*   Updated: 2026/01/08 16:00:30 by kaneddam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,24 @@ int	check_side_borders(t_parsing *data, int i, int first, int last)
 
 int	check_space_leaks(t_parsing *data, int i, int j)
 {
-	if (i > 0 && data->map[i][j] != '1' && data->map[i][j] != ' ')
+	if (data->map[i][j] != '1' && data->map[i][j] != ' ')
 	{
 		if (get_cell(data, j, i - 1) == ' ')
 		{
 			dputstr("Error: map must be surrounded by walls\n", 2);
 			return (0);
 		}
-		if (j > 0 && get_cell(data, j - 1, i - 1) == ' ')
+		if (get_cell(data, j, i + 1) == ' ')
+		{
+			dputstr("Error: map must be surrounded by walls\n", 2);
+			return (0);
+		}
+		if (get_cell(data, j - 1, i) == ' ')
+		{
+			dputstr("Error: map must be surrounded by walls\n", 2);
+			return (0);
+		}
+		if (get_cell(data, j + 1, i) == ' ')
 		{
 			dputstr("Error: map must be surrounded by walls\n", 2);
 			return (0);
