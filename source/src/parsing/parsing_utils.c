@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2026/01/05 11:44:36 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/06 18:57:39 by kaneddam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ int	is_empty_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
-			&& line[i] != '\r')
+		if (!ft_isspace(line[i]))
 			return (0);
 		i++;
 	}

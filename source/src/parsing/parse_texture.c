@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_texture.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kamar <kamar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by kamar             #+#    #+#             */
-/*   Updated: 2025/12/29 12:54:36 by kamar            ###   ########.fr       */
+/*   Updated: 2026/01/06 16:31:18 by kaneddam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,20 @@ int	parse_texture(char *path_str, char **dest)
 	ft_memcpy(*dest, start, len);
 	(*dest)[len] = '\0';
 	return (1);
+}
+
+int	is_wall(char c)
+{
+	return (c == '1');
+}
+
+int	is_void(char c)
+{
+	return (c == ' ');
+}
+
+int	is_map_char(char c)
+{
+	return (c == '0' || c == '1' || c == ' ' || c == 'N' || c == 'S' || c == 'E'
+		|| c == 'W' || c == 'D');
 }
