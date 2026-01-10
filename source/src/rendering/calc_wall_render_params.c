@@ -6,14 +6,38 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:41:54 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 16:12:26 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 19:01:56 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "consts.h"
 #include "rendering.h"
-#include "utils.h"
 #include <math.h>
+
+static mlx_texture_t	*tile_type_to_texture(t_raycast_result ray,
+		t_vector2 direction)
+{
+	if (ray.tile_type == CELL_WALL)
+	{
+		if (ray.side == 0)
+		{
+			if (direction.x < 0)
+				return (g_theme.ea);
+			else
+				return (g_theme.we);
+		}
+		else
+		{
+			if (direction.y < 0)
+				return (g_theme.no);
+			else
+				return (g_theme.so);
+		}
+	}
+	else if (ray.tile_type == CELL_DOOR)
+		return (g_theme.door);
+	return (g_theme.no);
+}
 
 static void	calc_draw_bounds(t_wall_render_params *params, int line_height,
 		int h, double total_dist)

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 16:54:17 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/23 20:02:53 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 19:26:19 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	init_view_model(void)
 	double			width;
 	int				id;
 
-	tex = mlx_load_png("assets/view_model.png");
+	tex = mlx_load_png("assets/textures/view_model.png");
 	if (!tex)
 		return (false);
 	img = mlx_texture_to_image(g_mlx, tex);

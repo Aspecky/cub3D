@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 17:23:51 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/23 18:49:16 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 19:28:13 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static mlx_image_t	*init_frame(uint32_t *frame_height, t_ivector2 frame_offset)
 	mlx_texture_t	*frame_tex;
 	mlx_image_t		*frame_img;
 
-	frame_tex = mlx_load_png("assets/porthole_window.png");
+	frame_tex = mlx_load_png("assets/textures/porthole_window.png");
 	if (!frame_tex)
 		return (0);
 	frame_img = mlx_texture_to_image(g_mlx, frame_tex);

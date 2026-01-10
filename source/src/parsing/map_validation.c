@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaneddam <kaneddam@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 16:11:22 by kaneddam          #+#    #+#             */
-/*   Updated: 2026/01/06 16:45:14 by kaneddam         ###   ########.fr       */
+/*   Updated: 2026/01/10 21:25:50 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ static int	check_row_borders(t_parsing *data, int i, int first, int last)
 	else if (!check_side_borders(data, i, first, last))
 		return (0);
 	return (1);
+}
+
+int	find_first_non_space(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	return (i);
 }
 
 int	check_map_borders(t_parsing *data)
