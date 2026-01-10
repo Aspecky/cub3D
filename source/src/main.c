@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/03 19:30:56 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 18:21:26 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "init.h"
 #include "loaders.h"
 #include "parsing.h"
+#include "rendering.h"
 #include <MLX42/MLX42.h>
 #include <ftlibc/ft_string.h>
 #include <mlx_aux/Color4.h>
@@ -22,8 +23,7 @@
 #include <mlx_aux/mlx_aux.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "rendering.h"
-#include <fcntl.h>
+#include <string.h>
 #include <unistd.h>
 
 mlx_t *g_mlx;
@@ -69,35 +69,31 @@ int main(int ac, char *av[])
 	t_parsing parse;
 
 	if (ac == 1)
-	{
-		dputstr("Usage: ./cub3D *.cub", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-
+		return (dputstr("Usage: ./cub3D *.cub", STDERR_FILENO), EXIT_FAILURE);
 	parse = parse_file(av[1]);
 	if (!parse.ok)
 		return (EXIT_FAILURE);
-	
+	printf("%ix%i\n", parse.map_height, parse.map_width);
+	for (int i = 0; i < parse.map_height; i++)
+	{
+		printf("[%zu]: %s\n", strlen(parse.map[i]), parse.map[i]);
+	}
+
 	g_mlx = open_scaled_window("cub3d");
 	if (!init_textures(parse) || !init_map(parse))
 		return (EXIT_FAILURE);
-	
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 	g_hookservice = hookservice_init(g_mlx);
-
-	load_player((t_vector2){parse.player_pos.x + 0.5, 
-				(parse.map_height - 1 - parse.player_pos.y) + 0.5}, 
+	load_player((t_vector2){parse.player_pos.x + 0.5,
+							(parse.map_height - 1 - parse.player_pos.y) + 0.5},
 				get_player_direction(parse.player_dir));
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
-
 	bind_key(g_hookservice, close_window_bind, NULL,
 			 (keys_t[]){MLX_KEY_ESCAPE, -1});
 	bind_loop(g_hookservice, render_loop, &g_player, 0);
 	load_minimap();
 	bind_loop(g_hookservice, fps_counter_bind, NULL, 0);
-
 	mlx_loop(g_mlx);
 	mlx_terminate(g_mlx);
-	return (0);
 }

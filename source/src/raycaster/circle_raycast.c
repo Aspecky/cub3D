@@ -6,12 +6,11 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 00:00:00 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/24 19:10:00 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/08 19:23:27 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include <float.h>
 #include <math.h>
 
 t_raycast_result	circle_raycast(t_vector2 origin, t_vector2 direction,
@@ -23,7 +22,7 @@ t_raycast_result	circle_raycast(t_vector2 origin, t_vector2 direction,
 	double				angle;
 	int					i;
 
-	shortest_ray = (t_raycast_result){.hit = false, .distance = DBL_MAX};
+	shortest_ray = (t_raycast_result){.hit = false, .distance = 1e36};
 	i = 0;
 	while (i < 12)
 	{

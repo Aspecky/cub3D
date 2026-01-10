@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 17:26:42 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/27 19:52:08 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/08 20:30:21 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "textures.h"
 #include <mlx_aux/mlx_aux.h>
 
-bool init_textures(t_parsing parse)
+bool	init_textures(t_parsing parse)
 {
 	g_theme.no = mlx_load_png(parse.no_path);
 	g_theme.ea = mlx_load_png(parse.ea_path);
@@ -26,10 +26,6 @@ bool init_textures(t_parsing parse)
 	g_theme.floor = color4_from_rgb(parse.floor);
 	if (!(g_theme.no && g_theme.ea && g_theme.so && g_theme.we))
 		return (false);
-	mlx_resize_texture(g_mlx, g_theme.no, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.ea, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.so, 64, 64);
-	mlx_resize_texture(g_mlx, g_theme.we, 64, 64);
 	transpose_texture(g_theme.no);
 	transpose_texture(g_theme.ea);
 	transpose_texture(g_theme.so);
