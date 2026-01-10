@@ -1,7 +1,7 @@
-NO ./assets/new.png
-SO ./assets/new.png
-WE ./assets/new.png
-EA ./assets/new.png
+NO ./assets/textures/north.png
+SO ./assets/textures/south.png
+WE ./assets/textures/east.png
+EA ./assets/textures/west.png
 
 F 220,100,0
 C 225,30,0

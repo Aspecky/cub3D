@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:16:05 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/10 19:03:57 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 19:25:45 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,10 @@ int	main(int ac, char *av[])
 	g_img = mlx_new_image(g_mlx, g_mlx->width, g_mlx->height);
 	mlx_image_to_window(g_mlx, g_img, 0, 0);
 	g_hookservice = hookservice_init(g_mlx);
-	load_player((t_vector2){parse.player_pos.x + 0.5, (parse.map_height - 1
+	if (!load_player((t_vector2){parse.player_pos.x + 0.5, (parse.map_height - 1
 			- parse.player_pos.y) + 0.5},
-		get_player_direction(parse.player_dir));
+		get_player_direction(parse.player_dir)))
+		return (EXIT_FAILURE);
 	bind_loop(g_hookservice, automatic_doors_bind, NULL, 0);
 	bind_key(g_hookservice, close_window_bind, NULL, (keys_t[]){MLX_KEY_ESCAPE,
 		-1});
