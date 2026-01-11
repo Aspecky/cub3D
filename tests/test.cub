@@ -1,7 +1,7 @@
-NO ./assets/textures/wallhaven-k88qq6.png
-SO ./assets/textures/wallhaven-k88qq6.png
-WE ./assets/textures/wallhaven-k88qq6.png
-EA ./assets/textures/wallhaven-k88qq6.png
+NO ./assets/textures/north.png
+SO ./assets/textures/norh.png
+WE ./assets/textures/north.png
+EA ./assets/textures/north.png
 
 C 135,206,235
 F 117,140,111
