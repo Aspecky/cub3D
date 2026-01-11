@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 21:33:37 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/10 22:34:42 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/11 20:17:59 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	draw_opaque_wall(t_wall_render_params params, uint32_t x)
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{
-		common.tex_y = (uint32_t)params.tex_pos;
+		common.tex_y = (uint32_t)params.tex_pos % params.tex_height;
 		params.tex_pos += params.step;
 		common.tex_ptr = common.tex_col + common.tex_y * 4;
 		common.img_ptr[0] = common.tex_ptr[0];
@@ -82,7 +82,7 @@ static void	draw_blended_wall(t_wall_render_params params, uint32_t x,
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{
-		common.tex_y = (uint32_t)params.tex_pos;
+		common.tex_y = (uint32_t)params.tex_pos % params.tex_height;
 		params.tex_pos += params.step;
 		common.tex_ptr = common.tex_col + common.tex_y * 4;
 		common.img_ptr[0] = (common.tex_ptr[0] * new_alpha + common.img_ptr[0]
