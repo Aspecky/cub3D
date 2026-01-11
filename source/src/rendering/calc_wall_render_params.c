@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:41:54 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/10 19:01:56 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 22:34:28 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static void	calc_texture_params(t_wall_render_params *params,
 	params->tex_pos = (params->draw_start - g_player.pitch - (int)(g_player.z
 				/ args.total_dist) - ((double)args.h / 2)
 			+ ((double)args.line_height / 2)) * params->step;
-	params->tex_height_mask = params->tex_height - 1;
 }
 
 t_wall_render_params	calc_wall_render_params(t_raycast_result ray,

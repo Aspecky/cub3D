@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 21:33:37 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/25 16:16:40 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/10 22:34:42 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	draw_opaque_wall(t_wall_render_params params, uint32_t x)
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{
-		common.tex_y = (uint32_t)params.tex_pos & params.tex_height_mask;
+		common.tex_y = (uint32_t)params.tex_pos;
 		params.tex_pos += params.step;
 		common.tex_ptr = common.tex_col + common.tex_y * 4;
 		common.img_ptr[0] = common.tex_ptr[0];
@@ -82,7 +82,7 @@ static void	draw_blended_wall(t_wall_render_params params, uint32_t x,
 	common.y = params.draw_start;
 	while (common.y < params.draw_end)
 	{
-		common.tex_y = (uint32_t)params.tex_pos & params.tex_height_mask;
+		common.tex_y = (uint32_t)params.tex_pos;
 		params.tex_pos += params.step;
 		common.tex_ptr = common.tex_col + common.tex_y * 4;
 		common.img_ptr[0] = (common.tex_ptr[0] * new_alpha + common.img_ptr[0]
@@ -116,7 +116,7 @@ void	render_loop(void *arg)
 			vars.ray = vars.rays[vars.i];
 			vars.params = calc_wall_render_params(vars.ray, vars.raydir,
 					vars.distances[vars.i], (int)g_img->height);
-			if (vars.rays_count == 1)
+			if (vars.ray.tile_opacity >= 1.0)
 				draw_opaque_wall(vars.params, vars.x);
 			else
 				draw_blended_wall(vars.params, vars.x, vars.ray.tile_opacity);
