@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:59:59 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/11 19:44:53 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/11 21:45:04 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	load_player(t_vector2 position, t_vector2 direction)
 {
 	if (!init_view_model())
 	{
-		dputstr("Failed to load view model", STDERR_FILENO);
+		dputstr("Failed to load view model\n", STDERR_FILENO);
 		return (false);
 	}
 	g_player.cam_plane = (t_vector2){direction.y * PLANE_SCALE, -direction.x
