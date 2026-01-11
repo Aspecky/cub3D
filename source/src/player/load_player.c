@@ -6,18 +6,23 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:59:59 by mtarrih           #+#    #+#             */
-/*   Updated: 2025/12/21 19:03:41 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/11 19:44:53 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "consts.h"
 #include "loaders.h"
 #include "player.h"
+#include <unistd.h>
+#include "ftlibc/ft_stdio.h"
 
 bool	load_player(t_vector2 position, t_vector2 direction)
 {
 	if (!init_view_model())
+	{
+		dputstr("Failed to load view model", STDERR_FILENO);
 		return (false);
+	}
 	g_player.cam_plane = (t_vector2){direction.y * PLANE_SCALE, -direction.x
 		* PLANE_SCALE};
 	g_player.pos = position;

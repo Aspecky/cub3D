@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 17:23:51 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/10 19:28:13 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/11 19:48:04 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static mlx_image_t	*init_frame(uint32_t *frame_height, t_ivector2 frame_offset)
 	if (!frame_tex)
 		return (0);
 	frame_img = mlx_texture_to_image(g_mlx, frame_tex);
+	mlx_delete_texture(frame_tex);
 	*frame_height = (uint32_t)((double)g_img->height * MINIMAP_SCALE);
 	mlx_resize_image(frame_img, *frame_height, *frame_height);
 	mlx_image_to_window(g_mlx, frame_img, frame_offset.x, frame_offset.y);

@@ -6,7 +6,7 @@
 /*   By: mtarrih <mtarrih@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 16:54:17 by mtarrih           #+#    #+#             */
-/*   Updated: 2026/01/10 19:26:19 by mtarrih          ###   ########.fr       */
+/*   Updated: 2026/01/11 19:45:10 by mtarrih          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool	init_view_model(void)
 	if (!tex)
 		return (false);
 	img = mlx_texture_to_image(g_mlx, tex);
+	mlx_delete_texture(tex);
 	ratio = (double)img->height / img->width;
 	width = (double)g_img->width * VIEW_MODEL_SCALE;
 	mlx_resize_image(img, width, width * ratio);
